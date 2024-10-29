@@ -19,17 +19,17 @@
          </font>
       </Label>
       <Separator layoutX="102.0" layoutY="67.0" prefWidth="200.0" />
-      <TextField layoutX="11.0" layoutY="98.0" prefHeight="46.0" prefWidth="380.0" promptText="email">
+      <TextField fx:id="txtEmail" layoutX="11.0" layoutY="98.0" prefHeight="46.0" prefWidth="380.0" promptText="email">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </TextField>
-      <PasswordField layoutX="11.0" layoutY="160.0" prefHeight="46.0" prefWidth="380.0" promptText="Password">
+      <PasswordField fx:id="txtPassword" layoutX="11.0" layoutY="160.0" prefHeight="46.0" prefWidth="380.0" promptText="Password">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </PasswordField>
-      <Button layoutX="11.0" layoutY="227.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="380.0" text="Sign in">
+      <Button layoutX="11.0" layoutY="227.0" mnemonicParsing="false" onAction="#signInOnAction" prefHeight="42.0" prefWidth="380.0" text="Sign in">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
