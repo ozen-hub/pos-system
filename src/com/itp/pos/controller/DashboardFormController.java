@@ -8,11 +8,14 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.Date;
 
 public class DashboardFormController {
     public Label lblUser;
     public Label lblTime;
+    public Label lblDate;
 
     public void initialize() {
         loadUser();
@@ -34,6 +37,13 @@ public class DashboardFormController {
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+        //======
+        //date
+        Date date = new Date();
+        SimpleDateFormat formatter =
+                new SimpleDateFormat("dd-MM-yyyy");
+        String d = formatter.format(date); // 29-10-2024
+        lblDate.setText(d);
     }
 
     private void loadUser() {
