@@ -55,9 +55,19 @@ public class LoginFormController {
                 txtPassword.getText(),
                 selectedUser.getPassword()
         )){
-            System.out.println("ok");
+
+            // load user interface
+            Database.user=selectedUser;
+            try {
+                setUi("DashboardForm");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }else{
-            System.out.println("wrong password");
+            new Alert(Alert.AlertType.WARNING,
+                    "Wrong password..",
+                    ButtonType.CLOSE).show();
         }
     }
 
