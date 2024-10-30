@@ -25,6 +25,7 @@ public class CustomerFormController {
     public TableColumn colSalary;
     public TableColumn colTools;
     public TextField txtSearch;
+    public Button btnSave;
 
     private String searchText="";
 
@@ -103,6 +104,15 @@ public class CustomerFormController {
                         }
                     }
 
+                });
+                update.setOnAction((e)->{
+                    txtId.setText(tm.getId());
+                    txtId.setEditable(false);
+                    txtName.setText(tm.getName());
+                    txtAddress.setText(tm.getAddress());
+                    //txtSalary.setText(tm.getSalary()+"");
+                    txtSalary.setText(String.valueOf(tm.getSalary()));
+                    btnSave.setText("Update Customer");
                 });
 
                 obList.add(tm);
