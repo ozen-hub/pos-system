@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javax.xml.crypto.Data;
+import java.util.Optional;
 
 public class CustomerFormController {
 
@@ -86,11 +87,19 @@ public class CustomerFormController {
 
                 delete.setOnAction((e)->{
 
-                    for (Customer cus:Database.customerTable){
-                        if(cus.getId().equals(tm.getId())){
-                            Database.customerTable.remove(cus);
-                            loadCustomerTable(searchText);
-                            return;
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Are you sure? whether Do you want to delete this customer?",
+                            ButtonType.YES,ButtonType.NO,ButtonType.CLOSE);
+
+                    Optional<ButtonType> buttonType =
+                            alert.showAndWait();
+                    if(buttonType.get().equals(ButtonType.YES)){
+                        for (Customer cus:Database.customerTable){
+                            if(cus.getId().equals(tm.getId())){
+                                Database.customerTable.remove(cus);
+                                loadCustomerTable(searchText);
+                                return;
+                            }
                         }
                     }
 
