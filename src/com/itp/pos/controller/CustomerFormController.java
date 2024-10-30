@@ -23,6 +23,8 @@ public class CustomerFormController {
     public TableColumn colTools;
     public TextField txtSearch;
 
+    private String searchText="";
+
     public void initialize() {
 
 
@@ -44,24 +46,27 @@ public class CustomerFormController {
         );
         //===========
 
-        loadCustomerTable();
+        loadCustomerTable(searchText);
 
 //        ===========
         txtSearch
                 .textProperty()
                 .addListener((observable, oldValue, newValue) -> {
-            searchCustomers(newValue);
+                    searchText=newValue;
+                    loadCustomerTable(searchText);
         });
 //        ===========
     }
 
-    private void searchCustomers(String newValue) {
+
+    private void loadCustomerTable(String SearchText) {
+        SearchText=SearchText.toLowerCase();
         ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
         for (Customer c : Database.customerTable) {
 
             if (
-                    c.getName().contains(newValue) ||
-                            c.getAddress().contains(newValue)
+                    c.getName().toLowerCase().contains(SearchText) ||
+                            c.getAddress().toLowerCase().contains(SearchText)
             ){
                 ButtonBar toolBar = new ButtonBar();
                 Button delete = new Button("Delete");
@@ -82,26 +87,6 @@ public class CustomerFormController {
         }
     }
 
-    private void loadCustomerTable() {
-        ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
-        for (Customer c : Database.customerTable) {
-            ButtonBar toolBar = new ButtonBar();
-            Button delete = new Button("Delete");
-            Button update = new Button("Update");
-            toolBar.getButtons().addAll(delete, update);
-            CustomerTm
-                    tm = new CustomerTm(
-                    c.getId(),
-                    c.getName(),
-                    c.getAddress(),
-                    c.getSalary(),
-                    toolBar
-            );
-            obList.add(tm);
-            tblCustomers.setItems(obList);
-        }
-    }
-
     public void saveOnAction(ActionEvent actionEvent) {
         Customer c1 = new Customer(
                 txtId.getText(),
@@ -114,7 +99,7 @@ public class CustomerFormController {
                 "Customer Saved",
                 ButtonType.OK).show();
         clear();
-        loadCustomerTable();
+        loadCustomerTable(searchText);
     }
 
     private void clear() {

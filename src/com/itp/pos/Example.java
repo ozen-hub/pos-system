@@ -1,13 +1,18 @@
 package com.itp.pos;
 
-import com.itp.pos.model.User;
+import java.util.Arrays;
 
-class Example{
+class Example {
     public static void main(String[] args) {
-        Integer x = 10;
-        int y = x.intValue();
+        String x = new String("abc xyz stu dfds");
 
-        Integer z=10;
-        int c=z;
+        System.out.println(x.toLowerCase());
+        System.out.println(x.toUpperCase());
+
+        String [] arr = x.split(" ");
+        System.out.println(Arrays.toString(arr));
+        System.out.println(x.toLowerCase().trim().length());
+
+
     }
 }
