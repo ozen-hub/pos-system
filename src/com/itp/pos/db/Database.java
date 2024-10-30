@@ -2,6 +2,7 @@ package com.itp.pos.db;
 
 import com.itp.pos.model.Customer;
 import com.itp.pos.model.User;
+import com.itp.pos.util.PasswordEncoder;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,8 @@ public class Database {
             customerTable = new ArrayList<>();
     static {
         userTable.add(
-                new User("a","a","Saman Kumara")
+                new User("a",
+                        PasswordEncoder.encode("a"),"Saman Kumara")
         );
         //=========
         customerTable.add(
