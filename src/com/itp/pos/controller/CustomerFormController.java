@@ -68,10 +68,11 @@ public class CustomerFormController {
 //        ===========
     }
 
-
+    private ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
     private void loadCustomerTable(String SearchText) {
+        obList.clear();
         SearchText=SearchText.toLowerCase();
-        ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
+
         for (Customer c : Database.customerTable) {
 
             if (
@@ -123,11 +124,6 @@ public class CustomerFormController {
 
                 obList.add(tm);
                 tblCustomers.setItems(obList);
-
-                if(Database.customerTable.isEmpty()){
-                    obList.clear();
-                }
-
             }
 
         }
