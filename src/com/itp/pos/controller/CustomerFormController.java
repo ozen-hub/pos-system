@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.xml.crypto.Data;
+
 public class CustomerFormController {
 
     public TextField txtId;
@@ -70,6 +72,7 @@ public class CustomerFormController {
             ){
                 ButtonBar toolBar = new ButtonBar();
                 Button delete = new Button("Delete");
+
                 Button update = new Button("Update");
                 toolBar.getButtons().addAll(delete, update);
                 CustomerTm
@@ -80,8 +83,22 @@ public class CustomerFormController {
                         c.getSalary(),
                         toolBar
                 );
+
+                delete.setOnAction((e)->{
+
+                    for (Customer cus:Database.customerTable){
+                        if(cus.getId().equals(tm.getId())){
+                            Database.customerTable.remove(cus);
+                            loadCustomerTable(searchText);
+                            return;
+                        }
+                    }
+
+                });
+
                 obList.add(tm);
                 tblCustomers.setItems(obList);
+                tblCustomers.refresh();
             }
 
         }

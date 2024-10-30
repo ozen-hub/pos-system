@@ -1,18 +1,22 @@
 package com.itp.pos;
 
-import java.util.Arrays;
+interface A{
+    void print(int value);
+}
+class B implements A{
 
-class Example {
+    @Override
+    public void print(int value) {
+        System.out.println(value);
+    }
+}
+class Example{
     public static void main(String[] args) {
-        String x = new String("abc xyz stu dfds");
-
-        System.out.println(x.toLowerCase());
-        System.out.println(x.toUpperCase());
-
-        String [] arr = x.split(" ");
-        System.out.println(Arrays.toString(arr));
-        System.out.println(x.toLowerCase().trim().length());
-
-
+        B b1 = new B();
+        b1.print(100);
+        A a1 = (x)->{
+            System.out.println(x);
+        };
+        a1.print(500);
     }
 }
