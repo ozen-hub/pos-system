@@ -145,4 +145,10 @@ public class CustomerFormController {
         txtSalary.clear();
         txtId.requestFocus();
     }
+
+    public void newCustomerOnAction(ActionEvent actionEvent) {
+        btnSave.setText("Save Customer");
+        txtId.setEditable(true);
+        clear();
+    }
 }
