@@ -6,10 +6,15 @@ import com.itp.pos.view.tm.CustomerTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.util.Optional;
 
 public class CustomerFormController {
@@ -26,6 +31,7 @@ public class CustomerFormController {
     public TableColumn colTools;
     public TextField txtSearch;
     public Button btnSave;
+    public AnchorPane context;
 
     private String searchText="";
 
@@ -117,7 +123,11 @@ public class CustomerFormController {
 
                 obList.add(tm);
                 tblCustomers.setItems(obList);
-                tblCustomers.refresh();
+
+                if(Database.customerTable.isEmpty()){
+                    obList.clear();
+                }
+
             }
 
         }
@@ -170,5 +180,23 @@ public class CustomerFormController {
         btnSave.setText("Save Customer");
         txtId.setEditable(true);
         clear();
+    }
+
+    private void setUi(String location) throws IOException {
+        Stage stage = (Stage)
+                context.getScene().getWindow();
+        stage.setScene(new Scene(
+                FXMLLoader.load(
+                        getClass().getResource("../view/"+location+".fxml")
+                )
+        ));
+    }
+
+    public void backToHomeOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("DashboardForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
