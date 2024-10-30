@@ -130,12 +130,32 @@ public class CustomerFormController {
                 txtAddress.getText(),
                 Double.parseDouble(txtSalary.getText())
         );
-        Database.customerTable.add(c1);
-        new Alert(Alert.AlertType.INFORMATION,
-                "Customer Saved",
-                ButtonType.OK).show();
-        clear();
-        loadCustomerTable(searchText);
+
+        if (btnSave.getText().equals("Save Customer")){
+            Database.customerTable.add(c1);
+            new Alert(Alert.AlertType.INFORMATION,
+                    "Customer Saved",
+                    ButtonType.OK).show();
+            clear();
+            loadCustomerTable(searchText);
+        }else{
+            for (Customer c: Database.customerTable){
+                if(c.getId().equals(c1.getId())){
+                    c.setAddress(c1.getAddress());
+                    c.setName(c1.getName());
+                    c.setSalary(c1.getSalary());
+                }
+                loadCustomerTable(searchText);
+                new Alert(Alert.AlertType.INFORMATION,
+                        "Success").show();
+                btnSave.setText("Save Customer");
+                clear();
+                txtId.setEditable(true);
+                return;
+            }
+        }
+
+
     }
 
     private void clear() {
