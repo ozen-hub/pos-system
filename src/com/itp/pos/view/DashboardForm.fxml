@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="312.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itp.pos.controller.DashboardFormController">
+<AnchorPane fx:id="context" prefHeight="312.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itp.pos.controller.DashboardFormController">
    <children>
       <AnchorPane prefHeight="51.0" prefWidth="677.0" style="-fx-background-color: #34495e;">
          <children>
@@ -55,7 +54,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button layoutX="15.0" layoutY="64.0" mnemonicParsing="false" text="Customer Management">
+      <Button layoutX="15.0" layoutY="64.0" mnemonicParsing="false" onAction="#openCustomerFormOnAction" text="Customer Management">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

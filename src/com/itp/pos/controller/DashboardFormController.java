@@ -5,9 +5,15 @@ import com.itp.pos.model.User;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
@@ -16,6 +22,7 @@ public class DashboardFormController {
     public Label lblUser;
     public Label lblTime;
     public Label lblDate;
+    public AnchorPane context;
 
     public void initialize() {
         loadUser();
@@ -51,5 +58,23 @@ public class DashboardFormController {
         lblUser.setText(
                 user.getFullName()
         );
+    }
+
+    public void openCustomerFormOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("CustomerForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setUi(String location) throws IOException {
+        Stage stage = (Stage)
+                context.getScene().getWindow();
+        stage.setScene(new Scene(
+                FXMLLoader.load(
+                        getClass().getResource("../view/"+location+".fxml")
+                )
+        ));
     }
 }
