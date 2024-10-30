@@ -21,8 +21,11 @@ public class CustomerFormController {
     public TableColumn colAddress;
     public TableColumn colSalary;
     public TableColumn colTools;
+    public TextField txtSearch;
 
-    public void initialize(){
+    public void initialize() {
+
+
         //===========
         colId.setCellValueFactory(
                 new PropertyValueFactory<>("id")
@@ -42,22 +45,57 @@ public class CustomerFormController {
         //===========
 
         loadCustomerTable();
+
+//        ===========
+        txtSearch
+                .textProperty()
+                .addListener((observable, oldValue, newValue) -> {
+            searchCustomers(newValue);
+        });
+//        ===========
+    }
+
+    private void searchCustomers(String newValue) {
+        ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
+        for (Customer c : Database.customerTable) {
+
+            if (
+                    c.getName().contains(newValue) ||
+                            c.getAddress().contains(newValue)
+            ){
+                ButtonBar toolBar = new ButtonBar();
+                Button delete = new Button("Delete");
+                Button update = new Button("Update");
+                toolBar.getButtons().addAll(delete, update);
+                CustomerTm
+                        tm = new CustomerTm(
+                        c.getId(),
+                        c.getName(),
+                        c.getAddress(),
+                        c.getSalary(),
+                        toolBar
+                );
+                obList.add(tm);
+                tblCustomers.setItems(obList);
+            }
+
+        }
     }
 
     private void loadCustomerTable() {
         ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
-        for(Customer c: Database.customerTable){
+        for (Customer c : Database.customerTable) {
             ButtonBar toolBar = new ButtonBar();
             Button delete = new Button("Delete");
             Button update = new Button("Update");
-            toolBar.getButtons().addAll(delete,update);
+            toolBar.getButtons().addAll(delete, update);
             CustomerTm
                     tm = new CustomerTm(
-                            c.getId(),
-                            c.getName(),
-                            c.getAddress(),
-                            c.getSalary(),
-                            toolBar
+                    c.getId(),
+                    c.getName(),
+                    c.getAddress(),
+                    c.getSalary(),
+                    toolBar
             );
             obList.add(tm);
             tblCustomers.setItems(obList);
@@ -76,8 +114,10 @@ public class CustomerFormController {
                 "Customer Saved",
                 ButtonType.OK).show();
         clear();
+        loadCustomerTable();
     }
-    private void clear(){
+
+    private void clear() {
         txtId.clear();
         txtAddress.clear();
         txtName.clear();

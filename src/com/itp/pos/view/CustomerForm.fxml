@@ -34,7 +34,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <TextField layoutX="14.0" layoutY="160.0" prefHeight="38.0" prefWidth="578.0" promptText="Search Customers">
+      <TextField fx:id="txtSearch" layoutX="14.0" layoutY="160.0" prefHeight="38.0" prefWidth="578.0" promptText="Search Customers">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
