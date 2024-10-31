@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class PlaceOrderFormController {
     public ComboBox<String> cmbCustomerId;
@@ -178,25 +179,25 @@ public class PlaceOrderFormController {
                 Double.parseDouble(txtUnitPrice.getText());
 
         int qty = Integer.parseInt(txtQty.getText());
-        if(alreadyExists!=null){
+        if (alreadyExists != null) {
             int existsQty = alreadyExists.getQty();
-            int newQty = existsQty+qty;
+            int newQty = existsQty + qty;
 
-            if(
-                    !isValidQty(Integer.parseInt(txtQtyOnHand.getText()),newQty)
-            ){
+            if (
+                    !isValidQty(Integer.parseInt(txtQtyOnHand.getText()), newQty)
+            ) {
                 return;
             }
 
-            double newTotal=newQty*unitPrice;
+            double newTotal = newQty * unitPrice;
             alreadyExists.setQty(newQty);
             alreadyExists.setTotal(newTotal);
             tblCart.refresh();
             clear();
-        }else{
+        } else {
 
-            if(!isValidQty(Integer.parseInt(txtQtyOnHand.getText()),qty)
-            ){
+            if (!isValidQty(Integer.parseInt(txtQtyOnHand.getText()), qty)
+            ) {
                 return;
             }
 
@@ -209,6 +210,28 @@ public class PlaceOrderFormController {
                     unitPrice * qty,
                     btn
             );
+
+            btn.setOnAction((e) -> {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Are you sure?",
+                        ButtonType.YES, ButtonType.NO, ButtonType.CLOSE);
+
+                Optional<ButtonType> buttonType =
+                        alert.showAndWait();
+                if (buttonType.get().equals(ButtonType.YES)) {
+                    for (CartTm t : tmObList) {
+                        if (t.getProductId().equals(tm.getProductId())) {
+                            tmObList.remove(t);
+                            tblCart.refresh();
+                            setNettAmount();
+                            return;
+                        }
+                    }
+                }
+
+            });
+
             tmObList.add(tm);
             tblCart.setItems(tmObList);
             clear();
@@ -216,41 +239,41 @@ public class PlaceOrderFormController {
         setNettAmount();
     }
 
-   /* private boolean isValidQty(int qtyOnHand, int...params){
-        int stock=qtyOnHand;
-        int customerRequestedQty=0;
-        for (int i = 0; i < params.length; i++) {
-            customerRequestedQty+=params[i];
+    /* private boolean isValidQty(int qtyOnHand, int...params){
+         int stock=qtyOnHand;
+         int customerRequestedQty=0;
+         for (int i = 0; i < params.length; i++) {
+             customerRequestedQty+=params[i];
+         }
+         return stock>customerRequestedQty;
+     }*/
+    private boolean isValidQty(int qtyOnHand,
+                               int customerRequestedQty) {
+        if (qtyOnHand > customerRequestedQty) {
+            return true;
         }
-        return stock>customerRequestedQty;
-    }*/
-   private boolean isValidQty(int qtyOnHand,
-                              int customerRequestedQty){
-      if(qtyOnHand>customerRequestedQty){
-          return true;
-      }
-       new Alert(Alert.AlertType.WARNING,
-               "Out of Stock...")
-               .show();
-       return false;
-   }
+        new Alert(Alert.AlertType.WARNING,
+                "Out of Stock...")
+                .show();
+        return false;
+    }
 
 
-    private CartTm isAlreadyExists(String productId){
-        for(CartTm tm:tmObList){
-            if(tm.getProductId().equals(productId)){
+    private CartTm isAlreadyExists(String productId) {
+        for (CartTm tm : tmObList) {
+            if (tm.getProductId().equals(productId)) {
                 return tm;
             }
         }
         return null;
     }
 
-    private void setNettAmount(){
-       double nett=0;
-       for (CartTm tm :tmObList){
-           nett+=tm.getTotal();
-       }
-       lblNett.setText(String.valueOf(nett));
+    private void setNettAmount() {
+        double nett = 0;
+        for (CartTm tm : tmObList) {
+            nett += tm.getTotal();
+        }
+        lblNett.setText(String.valueOf(nett));
     }
 
 }
