@@ -70,7 +70,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="15.0" layoutY="185.0" mnemonicParsing="false" text="Products Management">
+      <Button layoutX="15.0" layoutY="185.0" mnemonicParsing="false" onAction="#productManagementOnAction" text="Products Management">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

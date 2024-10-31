@@ -77,4 +77,12 @@ public class DashboardFormController {
                 )
         ));
     }
+
+    public void productManagementOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("ProductForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
