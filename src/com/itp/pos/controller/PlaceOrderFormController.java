@@ -6,14 +6,31 @@ import com.itp.pos.model.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 public class PlaceOrderFormController {
     public ComboBox<String> cmbCustomerId;
     public ComboBox<String> cmbProductId;
+    public TextField txtSalary;
+    public TextField txtName;
+    public TextField txtAddress;
 
     public void initialize() {
         loadCustomerIds();
         loadAllProductIds();
+        //---------------
+        cmbCustomerId.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    for(Customer c:Database.customerTable){
+                        if (newValue.equals(c.getId())){
+                            txtName.setText(c.getName());
+                            txtAddress.setText(c.getAddress());
+                            txtSalary.setText(String.valueOf(c.getSalary()));
+                            return;
+                        }
+                    }
+                });
     }
 
     private void loadAllProductIds() {
