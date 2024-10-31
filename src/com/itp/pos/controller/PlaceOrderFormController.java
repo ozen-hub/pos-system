@@ -60,26 +60,31 @@ public class PlaceOrderFormController {
         cmbCustomerId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    for (Customer c : Database.customerTable) {
-                        if (newValue.equals(c.getId())) {
-                            txtName.setText(c.getName());
-                            txtAddress.setText(c.getAddress());
-                            txtSalary.setText(String.valueOf(c.getSalary()));
-                            return;
+                    if(newValue!=null){
+                        for (Customer c : Database.customerTable) {
+                            if (newValue.equals(c.getId())) {
+                                txtName.setText(c.getName());
+                                txtAddress.setText(c.getAddress());
+                                txtSalary.setText(String.valueOf(c.getSalary()));
+                                return;
+                            }
                         }
                     }
+
                 });
         cmbProductId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    for (Product p : Database.productTable) {
-                        if (p.getProductId().equals(newValue)) {
-                            txtDescription.setText(p.getDescription());
-                            txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
-                            txtQtyOnHand.setText(String.valueOf(p.getQtyOnHand()));
-                            txtQty.requestFocus();
-                        }
-                    }
+                   if(newValue!=null){
+                       for (Product p : Database.productTable) {
+                           if (p.getProductId().equals(newValue)) {
+                               txtDescription.setText(p.getDescription());
+                               txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
+                               txtQtyOnHand.setText(String.valueOf(p.getQtyOnHand()));
+                               txtQty.requestFocus();
+                           }
+                       }
+                   }
                 });
 
 
@@ -284,8 +289,12 @@ public class PlaceOrderFormController {
 
     public void placeOrderOnAction(ActionEvent actionEvent) {
 
-        if(cmbCustomerId.getValue().isEmpty()){
+        if(cmbCustomerId.getValue()==null){
             new Alert(Alert.AlertType.WARNING,"Please Select your Customer").show();
+            return;
+        }
+        if (tmObList.isEmpty()){
+            new Alert(Alert.AlertType.WARNING,"At least one product is required!..").show();
             return;
         }
         Customer selectedCustomer=null;
