@@ -175,25 +175,40 @@ public class PlaceOrderFormController {
                 isAlreadyExists(cmbProductId.getValue());
         double unitPrice =
                 Double.parseDouble(txtUnitPrice.getText());
+
         int qty = Integer.parseInt(txtQty.getText());
-        if(
-                Integer.parseInt(txtQtyOnHand.getText())<qty
-        ){
-            new Alert(Alert.AlertType.WARNING,
-                    "Out of Stock...")
-                    .show();
-            //txtQty.setStyle("-fx-border-color: red");
-            return;
-        }
         if(alreadyExists!=null){
             int existsQty = alreadyExists.getQty();
             int newQty = existsQty+qty;
+
+            if(
+                    Integer.parseInt(txtQtyOnHand.getText())<newQty
+            ){
+                new Alert(Alert.AlertType.WARNING,
+                        "Out of Stock...")
+                        .show();
+                //txtQty.setStyle("-fx-border-color: red");
+                return;
+            }
+
             double newTotal=newQty*unitPrice;
             alreadyExists.setQty(newQty);
             alreadyExists.setTotal(newTotal);
             tblCart.refresh();
             clear();
         }else{
+
+
+            if(
+                    Integer.parseInt(txtQtyOnHand.getText())<qty
+            ){
+                new Alert(Alert.AlertType.WARNING,
+                        "Out of Stock...")
+                        .show();
+                //txtQty.setStyle("-fx-border-color: red");
+                return;
+            }
+
             Button btn = new Button("Delete");
             CartTm tm = new CartTm(
                     cmbProductId.getValue(),
@@ -208,6 +223,8 @@ public class PlaceOrderFormController {
             clear();
         }
     }
+
+
     private CartTm isAlreadyExists(String productId){
         for(CartTm tm:tmObList){
             if(tm.getProductId().equals(productId)){
