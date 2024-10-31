@@ -43,7 +43,8 @@ public class PlaceOrderFormController {
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colId.setCellValueFactory
+                (new PropertyValueFactory<>("productId"));
         //------------
 
         loadCustomerIds();
@@ -52,8 +53,8 @@ public class PlaceOrderFormController {
         cmbCustomerId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    for(Customer c:Database.customerTable){
-                        if (newValue.equals(c.getId())){
+                    for (Customer c : Database.customerTable) {
+                        if (newValue.equals(c.getId())) {
                             txtName.setText(c.getName());
                             txtAddress.setText(c.getAddress());
                             txtSalary.setText(String.valueOf(c.getSalary()));
@@ -64,11 +65,12 @@ public class PlaceOrderFormController {
         cmbProductId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    for (Product p: Database.productTable){
-                        if(p.getProductId().equals(newValue)){
+                    for (Product p : Database.productTable) {
+                        if (p.getProductId().equals(newValue)) {
                             txtDescription.setText(p.getDescription());
                             txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
                             txtQtyOnHand.setText(String.valueOf(p.getQtyOnHand()));
+                            txtQty.requestFocus();
                         }
                     }
                 });
@@ -79,16 +81,16 @@ public class PlaceOrderFormController {
     private void loadAllProductIds() {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        for(Product p: Database.productTable){
+        for (Product p : Database.productTable) {
             obList.add(p.getProductId());
         }
         cmbProductId.setItems(obList);
     }
 
     private void loadCustomerIds() {
-        ObservableList<String> obList=
+        ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        for(Customer c:Database.customerTable){
+        for (Customer c : Database.customerTable) {
             obList.add(c.getId());
         }
         cmbCustomerId.setItems(obList);
@@ -98,25 +100,25 @@ public class PlaceOrderFormController {
     }
 
     public void backToHomeOnAction(ActionEvent actionEvent) {
-        try{
+        try {
             setUi("DashboardForm");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void newCustomerOnAction(ActionEvent actionEvent) {
-        try{
+        try {
             setUi("CustomerForm");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void newProductOnAction(ActionEvent actionEvent) {
-        try{
+        try {
             setUi("ProductForm");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -126,14 +128,48 @@ public class PlaceOrderFormController {
                 context.getScene().getWindow();
         stage.setScene(new Scene(
                 FXMLLoader.load(
-                        getClass().getResource("../view/"+location+".fxml")
+                        getClass().getResource("../view/" + location + ".fxml")
                 )
         ));
     }
 
     ObservableList<CartTm>
-    tmObList = FXCollections.observableArrayList();
+            tmObList = FXCollections.observableArrayList();
+
     public void addToCartOnAction(ActionEvent actionEvent) {
+
+        setCartData();
+    }
+
+    private void clear() {
+        cmbProductId.setValue(null);
+        txtDescription.clear();
+        txtQty.clear();
+        txtQtyOnHand.clear();
+        txtUnitPrice.clear();
+        cmbProductId.requestFocus();
+    }
+
+    public void triggerAddToCartOnAction(ActionEvent actionEvent) {
+        setCartData();
+    }
+
+    private void setCartData() {
+
+        try {
+            Integer.parseInt(txtQty.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Please insert valid QYT")
+                    .show();
+            return;
+        }
+        if (txtQty.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Please insert valid QYT")
+                    .show();
+            return;
+        }
 
         double unitPrice =
                 Double.parseDouble(txtUnitPrice.getText());
@@ -144,10 +180,11 @@ public class PlaceOrderFormController {
                 txtDescription.getText(),
                 unitPrice,
                 qty,
-                unitPrice*qty,
+                unitPrice * qty,
                 btn
         );
         tmObList.add(tm);
         tblCart.setItems(tmObList);
+        clear();
     }
 }

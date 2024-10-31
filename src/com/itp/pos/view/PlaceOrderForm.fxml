@@ -91,7 +91,7 @@
          </font>
       </TextField>
       <Separator layoutX="14.0" layoutY="212.0" prefHeight="1.0" prefWidth="572.0" />
-      <TextField fx:id="txtQty" layoutX="424.0" layoutY="169.0" prefHeight="31.0" prefWidth="76.0" promptText="QTY">
+      <TextField fx:id="txtQty" layoutX="424.0" layoutY="169.0" onAction="#triggerAddToCartOnAction" prefHeight="31.0" prefWidth="76.0" promptText="QTY">
          <font>
             <Font size="14.0" />
          </font>
