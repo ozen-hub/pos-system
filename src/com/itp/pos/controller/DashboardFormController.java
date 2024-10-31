@@ -85,4 +85,12 @@ public class DashboardFormController {
             throw new RuntimeException(e);
         }
     }
+
+    public void placeNewOrderOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("PlaceOrderForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

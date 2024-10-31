@@ -62,7 +62,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="296.0" layoutY="64.0" mnemonicParsing="false" text="Place New Order">
+      <Button layoutX="296.0" layoutY="64.0" mnemonicParsing="false" onAction="#placeNewOrderOnAction" text="Place New Order">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
