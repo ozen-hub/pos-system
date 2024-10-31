@@ -55,7 +55,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ComboBox layoutX="12.0" layoutY="169.0" prefHeight="31.0" prefWidth="104.0" promptText="Product Id">
+      <ComboBox fx:id="cmbProductId" layoutX="12.0" layoutY="169.0" prefHeight="31.0" prefWidth="104.0" promptText="Product Id">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
