@@ -91,24 +91,24 @@
          </font>
       </TextField>
       <Separator layoutX="14.0" layoutY="212.0" prefHeight="1.0" prefWidth="572.0" />
-      <TextField layoutX="424.0" layoutY="169.0" prefHeight="31.0" prefWidth="76.0" promptText="QTY">
+      <TextField fx:id="txtQty" layoutX="424.0" layoutY="169.0" prefHeight="31.0" prefWidth="76.0" promptText="QTY">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button layoutX="508.0" layoutY="169.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Add To Cart">
+      <Button layoutX="508.0" layoutY="169.0" mnemonicParsing="false" onAction="#addToCartOnAction" prefHeight="31.0" prefWidth="82.0" text="Add To Cart">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <TableView layoutX="14.0" layoutY="243.0" prefHeight="113.0" prefWidth="572.0">
+      <TableView fx:id="tblCart" layoutX="14.0" layoutY="243.0" prefHeight="113.0" prefWidth="572.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Product Id" />
-          <TableColumn prefWidth="152.0" text="Description" />
-            <TableColumn prefWidth="96.0" text="Unit Price" />
-            <TableColumn prefWidth="79.0" text="QTY" />
-            <TableColumn prefWidth="92.0" text="Total" />
-            <TableColumn prefWidth="77.0" text="Option" />
+          <TableColumn fx:id="colId" prefWidth="75.0" text="Product Id" />
+          <TableColumn fx:id="colDescription" prefWidth="152.0" text="Description" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="96.0" text="Unit Price" />
+            <TableColumn fx:id="colQty" prefWidth="79.0" text="QTY" />
+            <TableColumn fx:id="colTotal" prefWidth="92.0" text="Total" />
+            <TableColumn fx:id="colOption" prefWidth="77.0" text="Option" />
         </columns>
       </TableView>
       <Separator layoutX="415.0" layoutY="169.0" orientation="VERTICAL" prefHeight="40.0" prefWidth="0.0" />

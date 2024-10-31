@@ -3,13 +3,13 @@ package com.itp.pos.controller;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
 import com.itp.pos.model.Product;
+import com.itp.pos.view.tm.CartTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -25,6 +25,14 @@ public class PlaceOrderFormController {
     public TextField txtUnitPrice;
     public TextField txtQtyOnHand;
     public AnchorPane context;
+    public TableView<CartTm> tblCart;
+    public TableColumn colId;
+    public TableColumn colDescription;
+    public TableColumn colUnitPrice;
+    public TableColumn colQty;
+    public TableColumn colTotal;
+    public TableColumn colOption;
+    public TextField txtQty;
 
     public void initialize() {
         loadCustomerIds();
@@ -108,5 +116,20 @@ public class PlaceOrderFormController {
                         getClass().getResource("../view/"+location+".fxml")
                 )
         ));
+    }
+
+    public void addToCartOnAction(ActionEvent actionEvent) {
+        double unitPrice =
+                Double.parseDouble(txtUnitPrice.getText());
+        int qty = Integer.parseInt(txtQty.getText());
+        Button btn = new Button("Delete");
+        CartTm tm = new CartTm(
+                cmbProductId.getValue(),
+                txtDescription.getText(),
+                unitPrice,
+                qty,
+                unitPrice*qty,
+                btn
+        );
     }
 }
