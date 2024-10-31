@@ -65,12 +65,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField editable="false" layoutX="121.0" layoutY="169.0" prefHeight="31.0" prefWidth="104.0" promptText="Description">
+      <TextField fx:id="txtDescription" editable="false" layoutX="121.0" layoutY="169.0" prefHeight="31.0" prefWidth="104.0" promptText="Description">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField editable="false" layoutX="228.0" layoutY="169.0" prefHeight="31.0" prefWidth="91.0" promptText="Unit Price">
+      <TextField fx:id="txtUnitPrice" editable="false" layoutX="228.0" layoutY="169.0" prefHeight="31.0" prefWidth="91.0" promptText="Unit Price">
          <font>
             <Font size="14.0" />
          </font>
@@ -85,7 +85,7 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField editable="false" layoutX="327.0" layoutY="169.0" prefHeight="31.0" prefWidth="82.0" promptText="QTY On Hand">
+      <TextField fx:id="txtQtyOnHand" editable="false" layoutX="327.0" layoutY="169.0" prefHeight="31.0" prefWidth="82.0" promptText="QTY On Hand">
          <font>
             <Font size="14.0" />
          </font>

@@ -14,6 +14,9 @@ public class PlaceOrderFormController {
     public TextField txtSalary;
     public TextField txtName;
     public TextField txtAddress;
+    public TextField txtDescription;
+    public TextField txtUnitPrice;
+    public TextField txtQtyOnHand;
 
     public void initialize() {
         loadCustomerIds();
@@ -28,6 +31,17 @@ public class PlaceOrderFormController {
                             txtAddress.setText(c.getAddress());
                             txtSalary.setText(String.valueOf(c.getSalary()));
                             return;
+                        }
+                    }
+                });
+        cmbProductId.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    for (Product p: Database.productTable){
+                        if(p.getProductId().equals(newValue)){
+                            txtDescription.setText(p.getDescription());
+                            txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
+                            txtQtyOnHand.setText(String.valueOf(p.getQtyOnHand()));
                         }
                     }
                 });
