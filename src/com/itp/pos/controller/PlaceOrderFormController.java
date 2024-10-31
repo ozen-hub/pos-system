@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -35,6 +36,16 @@ public class PlaceOrderFormController {
     public TextField txtQty;
 
     public void initialize() {
+
+        //------------
+        colOption.setCellValueFactory(new PropertyValueFactory<>("option"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //------------
+
         loadCustomerIds();
         loadAllProductIds();
         //---------------
@@ -61,6 +72,8 @@ public class PlaceOrderFormController {
                         }
                     }
                 });
+
+
     }
 
     private void loadAllProductIds() {
@@ -118,7 +131,10 @@ public class PlaceOrderFormController {
         ));
     }
 
+    ObservableList<CartTm>
+    tmObList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
+
         double unitPrice =
                 Double.parseDouble(txtUnitPrice.getText());
         int qty = Integer.parseInt(txtQty.getText());
@@ -131,5 +147,7 @@ public class PlaceOrderFormController {
                 unitPrice*qty,
                 btn
         );
+        tmObList.add(tm);
+        tblCart.setItems(tmObList);
     }
 }
