@@ -171,20 +171,49 @@ public class PlaceOrderFormController {
             return;
         }
 
+        CartTm alreadyExists =
+                isAlreadyExists(cmbProductId.getValue());
         double unitPrice =
                 Double.parseDouble(txtUnitPrice.getText());
         int qty = Integer.parseInt(txtQty.getText());
-        Button btn = new Button("Delete");
-        CartTm tm = new CartTm(
-                cmbProductId.getValue(),
-                txtDescription.getText(),
-                unitPrice,
-                qty,
-                unitPrice * qty,
-                btn
-        );
-        tmObList.add(tm);
-        tblCart.setItems(tmObList);
-        clear();
+        if(
+                Integer.parseInt(txtQtyOnHand.getText())<qty
+        ){
+            new Alert(Alert.AlertType.WARNING,
+                    "Out of Stock...")
+                    .show();
+            //txtQty.setStyle("-fx-border-color: red");
+            return;
+        }
+        if(alreadyExists!=null){
+            int existsQty = alreadyExists.getQty();
+            int newQty = existsQty+qty;
+            double newTotal=newQty*unitPrice;
+            alreadyExists.setQty(newQty);
+            alreadyExists.setTotal(newTotal);
+            tblCart.refresh();
+            clear();
+        }else{
+            Button btn = new Button("Delete");
+            CartTm tm = new CartTm(
+                    cmbProductId.getValue(),
+                    txtDescription.getText(),
+                    unitPrice,
+                    qty,
+                    unitPrice * qty,
+                    btn
+            );
+            tmObList.add(tm);
+            tblCart.setItems(tmObList);
+            clear();
+        }
     }
+    private CartTm isAlreadyExists(String productId){
+        for(CartTm tm:tmObList){
+            if(tm.getProductId().equals(productId)){
+                return tm;
+            }
+        }
+        return null;
+    } 
 }
