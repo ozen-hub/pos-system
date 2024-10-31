@@ -2,6 +2,8 @@ package com.itp.pos.controller;
 
 import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
+import com.itp.pos.model.Item;
+import com.itp.pos.model.Order;
 import com.itp.pos.model.Product;
 import com.itp.pos.view.tm.CartTm;
 import javafx.collections.FXCollections;
@@ -15,7 +17,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 public class PlaceOrderFormController {
     public ComboBox<String> cmbCustomerId;
@@ -99,6 +104,7 @@ public class PlaceOrderFormController {
     }
 
     public void resetOnAction(ActionEvent actionEvent) {
+        clearAll();
     }
 
     public void backToHomeOnAction(ActionEvent actionEvent) {
@@ -276,4 +282,62 @@ public class PlaceOrderFormController {
         lblNett.setText(String.valueOf(nett));
     }
 
+    public void placeOrderOnAction(ActionEvent actionEvent) {
+
+        if(cmbCustomerId.getValue().isEmpty()){
+            new Alert(Alert.AlertType.WARNING,"Please Select your Customer").show();
+            return;
+        }
+        Customer selectedCustomer=null;
+        label:for (Customer customer:Database.customerTable){
+            if(cmbCustomerId.getValue().equals(customer.getId())){
+                selectedCustomer=customer;
+                break label;
+            }
+        }
+
+        if(selectedCustomer==null){
+            new Alert(Alert.AlertType.WARNING,"Customer Not Found").show();
+            return;
+        }
+
+
+        ArrayList<Item> items = new ArrayList<>();
+        double nettAmount=0;
+        for(CartTm tm:tmObList){
+            nettAmount+=tm.getTotal();
+            items.add(
+                    new Item(tm.getProductId(),
+                            tm.getQty(),
+                            tm.getUnitPrice())
+            );
+        }
+        Order order = new Order(
+                UUID.randomUUID().toString(),
+                selectedCustomer,
+                new Date(),
+                nettAmount,
+                items
+        );
+
+        Database.orderTable.add(order);
+        new Alert(Alert.AlertType.INFORMATION,"Order Saved").show();
+        clearAll();
+
+    }
+    private void clearAll(){
+        txtQty.clear();
+        txtName.clear();
+        txtSalary.clear();
+        txtAddress.clear();
+        txtDescription.clear();
+        txtUnitPrice.clear();
+        txtQtyOnHand.clear();
+        cmbCustomerId.setValue(null);
+        cmbProductId.setValue(null);
+        cmbCustomerId.requestFocus();
+        tmObList.clear();
+        tblCart.refresh();
+        setNettAmount();
+    }
 }

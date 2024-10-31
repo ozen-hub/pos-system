@@ -1,6 +1,7 @@
 package com.itp.pos.db;
 
 import com.itp.pos.model.Customer;
+import com.itp.pos.model.Order;
 import com.itp.pos.model.Product;
 import com.itp.pos.model.User;
 import com.itp.pos.util.PasswordEncoder;
@@ -14,6 +15,8 @@ public class Database {
     public static ArrayList<Customer>
             customerTable = new ArrayList<>();
     public static ArrayList<Product> productTable
+            = new ArrayList<>();
+    public static ArrayList<Order> orderTable
             = new ArrayList<>();
     static {
         userTable.add(

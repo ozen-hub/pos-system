@@ -122,7 +122,7 @@
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <Button layoutX="504.0" layoutY="366.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Place Order">
+      <Button layoutX="504.0" layoutY="366.0" mnemonicParsing="false" onAction="#placeOrderOnAction" prefHeight="31.0" prefWidth="82.0" text="Place Order">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
