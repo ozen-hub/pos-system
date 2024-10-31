@@ -182,12 +182,8 @@ public class PlaceOrderFormController {
             int newQty = existsQty+qty;
 
             if(
-                    Integer.parseInt(txtQtyOnHand.getText())<newQty
+                    !isValidQty(Integer.parseInt(txtQtyOnHand.getText()),newQty)
             ){
-                new Alert(Alert.AlertType.WARNING,
-                        "Out of Stock...")
-                        .show();
-                //txtQty.setStyle("-fx-border-color: red");
                 return;
             }
 
@@ -198,14 +194,8 @@ public class PlaceOrderFormController {
             clear();
         }else{
 
-
-            if(
-                    Integer.parseInt(txtQtyOnHand.getText())<qty
+            if(!isValidQty(Integer.parseInt(txtQtyOnHand.getText()),qty)
             ){
-                new Alert(Alert.AlertType.WARNING,
-                        "Out of Stock...")
-                        .show();
-                //txtQty.setStyle("-fx-border-color: red");
                 return;
             }
 
@@ -223,6 +213,25 @@ public class PlaceOrderFormController {
             clear();
         }
     }
+
+   /* private boolean isValidQty(int qtyOnHand, int...params){
+        int stock=qtyOnHand;
+        int customerRequestedQty=0;
+        for (int i = 0; i < params.length; i++) {
+            customerRequestedQty+=params[i];
+        }
+        return stock>customerRequestedQty;
+    }*/
+   private boolean isValidQty(int qtyOnHand,
+                              int customerRequestedQty){
+      if(qtyOnHand>customerRequestedQty){
+          return true;
+      }
+       new Alert(Alert.AlertType.WARNING,
+               "Out of Stock...")
+               .show();
+       return false;
+   }
 
 
     private CartTm isAlreadyExists(String productId){
