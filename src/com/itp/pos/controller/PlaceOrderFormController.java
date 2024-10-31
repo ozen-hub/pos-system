@@ -330,6 +330,11 @@ public class PlaceOrderFormController {
         );
 
         Database.orderTable.add(order);
+
+        for(CartTm tm:tmObList){
+           updateQty(tm,tm.getQty());
+        }
+
         new Alert(Alert.AlertType.INFORMATION,"Order Saved").show();
         clearAll();
 
@@ -349,4 +354,17 @@ public class PlaceOrderFormController {
         tblCart.refresh();
         setNettAmount();
     }
+
+    private boolean updateQty(CartTm tm, int qty){
+        for(Product pr: Database.productTable){
+            if(tm.getProductId().equals(pr.getProductId())){
+                pr.setQtyOnHand(
+                        pr.getQtyOnHand()-qty
+                );
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
