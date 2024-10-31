@@ -6,10 +6,14 @@ import com.itp.pos.view.tm.ProductTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class ProductFormController {
@@ -36,14 +40,42 @@ public class ProductFormController {
         colDescription.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("description"));
         colTools.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("button"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("unitPrice"));
-        colQty.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("qty"));
+        colQty.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("qtyOnHand"));
 
+        //===========
+        txtSearch
+                .textProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    searchText = newValue;
+                    loadTableData(searchText);
+                });
+        //===========
+        tblProducts.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if(newValue != null) {
+                        setData(newValue);
+                    }
+                });
+
+
+    }
+
+    private void setData(ProductTm newValue) {
+        txtId.setText(newValue.getId());
+        txtDescription.setText(newValue.getDescription());
+        txtUnitPrice.setText(String.valueOf(newValue.getUnitPrice()));
+        txtQty.setText(String.valueOf(newValue.getQtyOnHand()));
+
+        txtId.setEditable(false);
+        btnSave.setText("Update Product");
     }
 
     private ObservableList<ProductTm> obList =
             FXCollections.observableArrayList();
 
     private void loadTableData(String searchText) {
+        obList.clear();
         searchText = searchText.toLowerCase();
         for (Product p : Database.productTable) {
             if (p.getDescription().toLowerCase().contains(searchText)) {
@@ -83,10 +115,30 @@ public class ProductFormController {
         }
     }
 
-    public void backToHomeOnAction(ActionEvent actionEvent) {
+
+    private void setUi(String location) throws IOException {
+        Stage stage = (Stage)
+                context.getScene().getWindow();
+        stage.setScene(new Scene(
+                FXMLLoader.load(
+                        getClass().getResource("../view/" + location + ".fxml")
+                )
+        ));
     }
 
+    public void backToHomeOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("DashboardForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void newProductOnAction(ActionEvent actionEvent) {
+        btnSave.setText("Save Product");
+        txtId.setEditable(true);
+        clear();
     }
 
     public void saveOnAction(ActionEvent actionEvent) {
@@ -101,6 +153,7 @@ public class ProductFormController {
             Database.productTable.add(product);
             new Alert(Alert.AlertType.INFORMATION, "Saved..").show();
             loadTableData(searchText);
+            clear();
         } else {
             for (Product p : Database.productTable) {
                 if (p.getProductId().equals(product.getProductId())) {
@@ -120,6 +173,7 @@ public class ProductFormController {
         }
 
     }
+
     private void clear() {
         txtId.clear();
         txtDescription.clear();
