@@ -34,6 +34,7 @@ public class PlaceOrderFormController {
     public TableColumn colTotal;
     public TableColumn colOption;
     public TextField txtQty;
+    public Label lblNett;
 
     public void initialize() {
 
@@ -212,6 +213,7 @@ public class PlaceOrderFormController {
             tblCart.setItems(tmObList);
             clear();
         }
+        setNettAmount();
     }
 
    /* private boolean isValidQty(int qtyOnHand, int...params){
@@ -241,5 +243,14 @@ public class PlaceOrderFormController {
             }
         }
         return null;
-    } 
+    }
+
+    private void setNettAmount(){
+       double nett=0;
+       for (CartTm tm :tmObList){
+           nett+=tm.getTotal();
+       }
+       lblNett.setText(String.valueOf(nett));
+    }
+
 }
