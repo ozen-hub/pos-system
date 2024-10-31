@@ -160,14 +160,15 @@ public class ProductFormController {
                     p.setDescription(product.getDescription());
                     p.setQtyOnHand(product.getQtyOnHand());
                     p.setUitPrice(product.getUitPrice());
+                    loadTableData(searchText);
+                    new Alert(Alert.AlertType.INFORMATION,
+                            "Success").show();
+                    btnSave.setText("Save Product");
+                    clear();
+                    txtId.setEditable(true);
+                    return;
                 }
-                loadTableData(searchText);
-                new Alert(Alert.AlertType.INFORMATION,
-                        "Success").show();
-                btnSave.setText("Save Product");
-                clear();
-                txtId.setEditable(true);
-                return;
+
             }
 
         }

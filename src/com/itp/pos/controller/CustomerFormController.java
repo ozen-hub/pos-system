@@ -150,14 +150,15 @@ public class CustomerFormController {
                     c.setAddress(c1.getAddress());
                     c.setName(c1.getName());
                     c.setSalary(c1.getSalary());
+                    loadCustomerTable(searchText);
+                    new Alert(Alert.AlertType.INFORMATION,
+                            "Success").show();
+                    btnSave.setText("Save Customer");
+                    clear();
+                    txtId.setEditable(true);
+                    return;
                 }
-                loadCustomerTable(searchText);
-                new Alert(Alert.AlertType.INFORMATION,
-                        "Success").show();
-                btnSave.setText("Save Customer");
-                clear();
-                txtId.setEditable(true);
-                return;
+
             }
         }
 
