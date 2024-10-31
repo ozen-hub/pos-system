@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.view.tm.ProductTm;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -15,7 +16,7 @@ public class ProductFormController {
     public TextField txtUnitPrice;
     public TextField txtQty;
     public Button btnSave;
-    public TableView tblProducts;
+    public TableView<ProductTm> tblProducts;
     public TableColumn colId;
     public TableColumn colDescription;
     public TableColumn colUnitPrice;
