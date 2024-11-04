@@ -120,7 +120,7 @@ public class DashboardFormController {
 
     public void backupFormOnAction(ActionEvent actionEvent) {
         try {
-            setUi("BackupFormForm");
+            setUi("BackupForm");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
