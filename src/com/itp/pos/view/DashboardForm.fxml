@@ -86,7 +86,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="232.0" layoutY="122.0" mnemonicParsing="false" text="Database Backup">
+      <Button layoutX="232.0" layoutY="122.0" mnemonicParsing="false" onAction="#backupFormOnAction" text="Database Backup">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
