@@ -93,4 +93,12 @@ public class DashboardFormController {
             throw new RuntimeException(e);
         }
     }
+
+    public void orderHistoryOnAction(ActionEvent actionEvent) {
+        try {
+            setUi("OrderHistoryForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

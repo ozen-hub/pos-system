@@ -78,7 +78,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="15.0" layoutY="124.0" mnemonicParsing="false" text="All Order History">
+      <Button layoutX="15.0" layoutY="124.0" mnemonicParsing="false" onAction="#orderHistoryOnAction" text="All Order History">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

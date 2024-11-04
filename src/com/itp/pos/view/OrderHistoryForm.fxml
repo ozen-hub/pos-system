@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="context" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itp.pos.controller.OrderHistoryFormController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Order History">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <Separator layoutX="14.0" layoutY="54.0" prefHeight="3.0" prefWidth="567.0" />
+      <Button layoutX="490.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToHomeOnAction" text="Back to Home">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <TableView fx:id="tblOrders" layoutX="14.0" layoutY="68.0" prefHeight="318.0" prefWidth="567.0">
+        <columns>
+          <TableColumn fx:id="colDate" prefWidth="190.0" text="Date" />
+          <TableColumn fx:id="colCustomerName" prefWidth="127.0" text="Customer Name" />
+            <TableColumn fx:id="colTotal" prefWidth="90.0" text="Total Amount" />
+            <TableColumn fx:id="colProductCount" prefWidth="56.0" text="Items" />
+            <TableColumn fx:id="colOption" prefWidth="103.0" text="Options" />
+        </columns>
+      </TableView>
+      <Button layoutX="391.0" layoutY="14.0" mnemonicParsing="false" onAction="#newOrderOnAction" text="+ New Order">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
