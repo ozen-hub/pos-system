@@ -19,6 +19,7 @@ public class Database {
     public static ArrayList<Order> orderTable
             = new ArrayList<>();
     static {
+
         userTable.add(
                 new User("a",
                         PasswordEncoder.encode("a"),"Saman Kumara")

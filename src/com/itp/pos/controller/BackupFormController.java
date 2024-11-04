@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.Database;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,37 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Date;
+
 
 public class BackupFormController {
     public AnchorPane context;
     public TextArea txtClipboard;
+
+    public void initialize(){
+        setClipboardData();
+    }
+
+    private void setClipboardData() {
+        txtClipboard.setEditable(false);
+        // create the header ==========
+        txtClipboard.appendText("Date: "+ new Date());
+        txtClipboard.appendText("\n===========================");
+
+        txtClipboard.appendText(
+                "\n\n*====Customer Data====*\n"
+        );
+        for (int i = 0; i <
+                Database.customerTable.size(); i++) {
+            txtClipboard.appendText(
+                    i+". "+Database.customerTable.get(i)
+                            .toString()+
+                            "\n"
+            );
+        }
+
+    }
+
 
     public void backToHomeOnAction(ActionEvent actionEvent) {
         try {
