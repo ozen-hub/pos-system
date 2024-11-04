@@ -19,14 +19,14 @@ public class BackupFormController {
     public AnchorPane context;
     public TextArea txtClipboard;
 
-    public void initialize(){
+    public void initialize() {
         setClipboardData();
     }
 
     private void setClipboardData() {
         txtClipboard.setEditable(false);
         // create the header ==========
-        txtClipboard.appendText("Date: "+ new Date());
+        txtClipboard.appendText("Date: " + new Date());
         txtClipboard.appendText("\n===========================");
 
         txtClipboard.appendText(
@@ -35,11 +35,50 @@ public class BackupFormController {
         for (int i = 0; i <
                 Database.customerTable.size(); i++) {
             txtClipboard.appendText(
-                    i+". "+Database.customerTable.get(i)
-                            .toString()+
+                    (i + 1) + ". " + Database.customerTable.get(i)
+                            .toString() +
                             "\n"
             );
         }
+        txtClipboard.appendText(
+                "\n\n*====Product Data====*\n"
+        );
+        for (int i = 0; i <
+                Database.productTable.size(); i++) {
+            txtClipboard.appendText(
+                    (i + 1) + ". " + Database.productTable.get(i)
+                            .toString() +
+                            "\n"
+            );
+        }
+
+        if (!Database.orderTable.isEmpty()) {
+            txtClipboard.appendText(
+                    "\n\n*====Order Data====*\n"
+            );
+            for (int i = 0; i <
+                    Database.orderTable.size(); i++) {
+                txtClipboard.appendText(
+                        (i + 1) + ". " + Database.orderTable.get(i)
+                                .toString() +
+                                "\n"
+                );
+            }
+        }
+        txtClipboard.appendText(
+                "\n\n*====User Data====*\n"
+        );
+        for (int i = 0; i <
+                Database.userTable.size(); i++) {
+            txtClipboard.appendText(
+                    (i + 1) + ". " + Database.userTable.get(i)
+                            .toString() +
+                            "\n"
+            );
+        }
+        txtClipboard.appendText(
+                "\n\n*=======End=======*\n"
+        );
 
     }
 
