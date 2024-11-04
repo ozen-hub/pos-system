@@ -4,6 +4,7 @@ import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
 import com.itp.pos.model.Order;
 import com.itp.pos.view.tm.OrderTm;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -121,11 +123,25 @@ public class OrderHistoryFormController {
     private void setUi(String location) throws IOException {
         Stage stage = (Stage)
                 context.getScene().getWindow();
-        stage.setScene(new Scene(
-                FXMLLoader.load(
-                        getClass().getResource("../view/"+location+".fxml")
-                )
-        ));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/" + location + ".fxml"));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setOnFinished(event -> {
+
+            stage.setScene(new Scene(root));
+
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), root);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+        });
+
+
+        fadeOut.play();
+
     }
 
 }
