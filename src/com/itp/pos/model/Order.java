@@ -60,4 +60,15 @@ public class Order {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", customer=" + customer +
+                ", date=" + date +
+                ", nett=" + nett +
+                ", items=" + items +
+                '}';
+    }
 }
