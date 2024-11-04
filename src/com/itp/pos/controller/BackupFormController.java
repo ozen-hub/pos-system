@@ -6,11 +6,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
@@ -92,6 +97,34 @@ public class BackupFormController {
     }
 
     public void startBackupOnAction(ActionEvent actionEvent) {
+
+        FileChooser fileChooser
+                = new FileChooser();
+        fileChooser.setTitle("Generate Backup file");
+        fileChooser.setInitialFileName("backupFile_"+
+                new Date()+"_.txt");
+        fileChooser.getExtensionFilters()
+         .add(new FileChooser.
+          ExtensionFilter("Text File",
+                 "*.txt"));
+        File file =
+                fileChooser.
+                        showOpenDialog(null);
+        if(file!=null){
+            try(
+                    BufferedWriter bufferedWriter
+                            = new BufferedWriter(
+                                    new FileWriter(file)
+                    )
+                    ){
+                bufferedWriter.write(txtClipboard.getText());
+                new Alert(Alert.AlertType.INFORMATION,"Success!...").show();
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR,"Something went wrong!... = >"+e.getMessage()).show();
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     private void setUi(String location) throws IOException {
