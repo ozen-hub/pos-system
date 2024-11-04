@@ -1,21 +1,22 @@
 package com.itp.pos.controller;
 
 import com.itp.pos.db.Database;
+import com.itp.pos.model.Customer;
 import com.itp.pos.model.Order;
 import com.itp.pos.view.tm.OrderTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class OrderHistoryFormController {
     public AnchorPane context;
@@ -36,12 +37,39 @@ public class OrderHistoryFormController {
 
 
         setAllTableData();
+
+
+        tblOrders.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if(newValue!=null){
+                        FXMLLoader loader =
+                                new FXMLLoader(
+                                        getClass().getResource("./view/OrderDetailsForm.fxml")
+                                );
+                        try {
+                            Parent parent = loader.load();
+                            Stage stage = new Stage();
+                            Scene scene = new Scene(
+                                    parent
+                            );
+                            OrderDetailsFormController controller = loader.getController();
+                            controller.setOrderId(newValue.getOrderId());
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+
     }
 
     ObservableList<OrderTm> observableList =
             FXCollections.observableArrayList();
 
     private void setAllTableData() {
+        observableList.clear();
         for(Order o: Database.orderTable){
             Button btn = new Button("Delete");
             OrderTm tm = new OrderTm(
@@ -52,6 +80,23 @@ public class OrderHistoryFormController {
                     o.getNett(),
                     btn
             );
+            btn.setOnAction((e)->{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Are you sure? whether Do you want to delete this Product?",
+                        ButtonType.YES,ButtonType.NO,ButtonType.CLOSE);
+
+                Optional<ButtonType> buttonType =
+                        alert.showAndWait();
+                if(buttonType.get().equals(ButtonType.YES)){
+                    for (Order or:Database.orderTable){
+                        if(or.getOrderId().equals(tm.getOrderId())){
+                            Database.orderTable.remove(or);
+                            setAllTableData();
+                            return;
+                        }
+                    }
+                }
+            });
             observableList.add(tm);
             tblOrders.setItems(observableList);
         }
