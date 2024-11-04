@@ -45,7 +45,7 @@ public class OrderHistoryFormController {
                     if(newValue!=null){
                         FXMLLoader loader =
                                 new FXMLLoader(
-                                        getClass().getResource("./view/OrderDetailsForm.fxml")
+                                        getClass().getResource("../view/OrderDetailsForm.fxml")
                                 );
                         try {
                             Parent parent = loader.load();
