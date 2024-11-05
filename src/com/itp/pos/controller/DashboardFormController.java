@@ -71,6 +71,8 @@ public class DashboardFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("user access "+location+" page.");
+
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));

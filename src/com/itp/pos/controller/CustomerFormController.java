@@ -73,6 +73,7 @@ public class CustomerFormController {
 
     private ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
     private void loadCustomerTable(String SearchText) {
+        Database.log("all customer loaded");
         obList.clear();
         SearchText=SearchText.toLowerCase();
 
@@ -108,6 +109,7 @@ public class CustomerFormController {
                         for (Customer cus:Database.customerTable){
                             if(cus.getId().equals(tm.getId())){
                                 Database.customerTable.remove(cus);
+                                Database.log("Customer was Deleted");
                                 loadCustomerTable(searchText);
                                 return;
                             }
@@ -145,6 +147,7 @@ public class CustomerFormController {
             new Alert(Alert.AlertType.INFORMATION,
                     "Customer Saved",
                     ButtonType.OK).show();
+            Database.log("New Customer Created");
             clear();
             loadCustomerTable(searchText);
         }else{
@@ -156,6 +159,7 @@ public class CustomerFormController {
                     loadCustomerTable(searchText);
                     new Alert(Alert.AlertType.INFORMATION,
                             "Success").show();
+                    Database.log("Customer Updated");
                     btnSave.setText("Save Customer");
                     clear();
                     txtId.setEditable(true);
@@ -183,6 +187,7 @@ public class CustomerFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("user access "+location+" page.");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));

@@ -26,6 +26,7 @@ public class ReportFormController {
     }
 
     private void loadOrderStatistics() {
+        Database.log("Load All Order Statistics");
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM");
         Map<String, Long> dataMap =

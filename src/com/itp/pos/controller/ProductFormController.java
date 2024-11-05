@@ -57,6 +57,7 @@ public class ProductFormController {
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if(newValue != null) {
+                        Database.log("Load Product Data");
                         setData(newValue);
                     }
                 });
@@ -78,6 +79,7 @@ public class ProductFormController {
             FXCollections.observableArrayList();
 
     private void loadTableData(String searchText) {
+        Database.log("Load All Products");
         obList.clear();
         searchText = searchText.toLowerCase();
         for (Product p : Database.productTable) {
@@ -104,6 +106,7 @@ public class ProductFormController {
                         for (Product pro : Database.productTable) {
                             if (pro.getProductId().equals(tm.getId())) {
                                 Database.productTable.remove(pro);
+                                Database.log("Product Deleted");
                                 loadTableData(finalSearchText);
                                 return;
                             }
@@ -120,6 +123,7 @@ public class ProductFormController {
 
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location+" page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
@@ -170,6 +174,7 @@ public class ProductFormController {
             Database.productTable.add(product);
             new Alert(Alert.AlertType.INFORMATION, "Saved..").show();
             loadTableData(searchText);
+            Database.log("Created new Product");
             clear();
         } else {
             for (Product p : Database.productTable) {
@@ -180,6 +185,7 @@ public class ProductFormController {
                     loadTableData(searchText);
                     new Alert(Alert.AlertType.INFORMATION,
                             "Success").show();
+                    Database.log("Product Updated");
                     btnSave.setText("Save Product");
                     clear();
                     txtId.setEditable(true);

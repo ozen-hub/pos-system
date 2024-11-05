@@ -65,6 +65,7 @@ public class PlaceOrderFormController {
                 .addListener((observable, oldValue, newValue) -> {
                     if(newValue!=null){
                         for (Customer c : Database.customerTable) {
+                            Database.log("load customer data");
                             if (newValue.equals(c.getId())) {
                                 txtName.setText(c.getName());
                                 txtAddress.setText(c.getAddress());
@@ -80,6 +81,7 @@ public class PlaceOrderFormController {
                 .addListener((observable, oldValue, newValue) -> {
                    if(newValue!=null){
                        for (Product p : Database.productTable) {
+                           Database.log("Load Product data");
                            if (p.getProductId().equals(newValue)) {
                                txtDescription.setText(p.getDescription());
                                txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
@@ -97,6 +99,7 @@ public class PlaceOrderFormController {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
         for (Product p : Database.productTable) {
+            Database.log("Load Product Ids");
             obList.add(p.getProductId());
         }
         cmbProductId.setItems(obList);
@@ -106,6 +109,7 @@ public class PlaceOrderFormController {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
         for (Customer c : Database.customerTable) {
+            Database.log("Load Customer Ids");
             obList.add(c.getId());
         }
         cmbCustomerId.setItems(obList);
@@ -140,6 +144,7 @@ public class PlaceOrderFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location+" Page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
@@ -221,6 +226,7 @@ public class PlaceOrderFormController {
             alreadyExists.setQty(newQty);
             alreadyExists.setTotal(newTotal);
             tblCart.refresh();
+            Database.log("Cart Data updated");
             clear();
         } else {
 
@@ -238,7 +244,7 @@ public class PlaceOrderFormController {
                     unitPrice * qty,
                     btn
             );
-
+            Database.log("new Cart data added.");
             btn.setOnAction((e) -> {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -347,7 +353,7 @@ public class PlaceOrderFormController {
         );
 
         Database.orderTable.add(order);
-
+        Database.log("Order Placed");
         for(CartTm tm:tmObList){
            updateQty(tm,tm.getQty());
         }
@@ -375,6 +381,7 @@ public class PlaceOrderFormController {
     private boolean updateQty(CartTm tm, int qty){
         for(Product pr: Database.productTable){
             if(tm.getProductId().equals(pr.getProductId())){
+                Database.log("Quantity Updated");
                 pr.setQtyOnHand(
                         pr.getQtyOnHand()-qty
                 );

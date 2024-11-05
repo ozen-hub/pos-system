@@ -50,6 +50,7 @@ public class OrderDetailsFormController {
             = FXCollections.observableArrayList();
 
     private void loadData(String orderId) {
+        Database.log("load All Order Details");
         for (Order or: Database.orderTable){
             if(or.getOrderId().equals(orderId)){
 

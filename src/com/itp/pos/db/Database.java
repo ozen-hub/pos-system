@@ -194,4 +194,15 @@ public class Database {
         }
 
     }
+
+    public static void log(String activity){
+        activityTable.add(
+                new Activity(
+                        UUID.randomUUID().toString(),
+                        activity,
+                        new Date(),
+                        user!=null? user.getEmail() : "Unknown User"
+                )
+        );
+    }
 }

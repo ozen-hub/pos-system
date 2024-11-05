@@ -58,6 +58,7 @@ public class OrderHistoryFormController {
                             OrderDetailsFormController controller = loader.getController();
                             controller.setOrderId(newValue.getOrderId());
                             stage.setScene(scene);
+                            Database.log("access order history page");
                             stage.show();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -93,6 +94,7 @@ public class OrderHistoryFormController {
                     for (Order or:Database.orderTable){
                         if(or.getOrderId().equals(tm.getOrderId())){
                             Database.orderTable.remove(or);
+                            Database.log("order removed");
                             setAllTableData();
                             return;
                         }
@@ -121,6 +123,7 @@ public class OrderHistoryFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location+" page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));

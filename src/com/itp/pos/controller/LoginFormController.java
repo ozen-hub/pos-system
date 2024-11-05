@@ -33,6 +33,7 @@ public class LoginFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location +" page.");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
@@ -57,12 +58,14 @@ public class LoginFormController {
     }
 
     public void signInOnAction(ActionEvent actionEvent) {
+        Database.log("User attempt to log in");
         String email = txtEmail.getText();
         /*Optional<Boolean> first = Database.userTable.stream()
                 .map(e -> e.getEmail()
                         .equals(email)).findFirst();*/
         User selectedUser = findUser(email);
         if(selectedUser == null){
+            Database.log("User Logged in attempt failed.");
             new Alert(Alert.AlertType.WARNING,
                     "user email not found..",
                     ButtonType.CLOSE).show();
@@ -75,6 +78,7 @@ public class LoginFormController {
 
             // load user interface
             Database.user=selectedUser;
+            Database.log("User Logged in");
             try {
                 setUi("DashboardForm");
             } catch (IOException e) {
@@ -82,6 +86,7 @@ public class LoginFormController {
             }
 
         }else{
+            Database.log("User Logged in failed");
             new Alert(Alert.AlertType.WARNING,
                     "Wrong password..",
                     ButtonType.CLOSE).show();

@@ -97,7 +97,7 @@ public class BackupFormController {
     }
 
     public void startBackupOnAction(ActionEvent actionEvent) {
-
+        Database.log("attempt to make a backup");
         FileChooser fileChooser
                 = new FileChooser();
         fileChooser.setTitle("Generate Backup file");
@@ -130,6 +130,7 @@ public class BackupFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location+" page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));

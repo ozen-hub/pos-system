@@ -37,6 +37,7 @@ public class RegisterFormController {
                 PasswordEncoder.encode(txtPassword.getText())
         );
         user.setFullName(txtFullName.getText());
+        Database.log("User Registered");
         Database.userTable.add(user);
 
         try {
@@ -47,6 +48,7 @@ public class RegisterFormController {
     }
 
     private void setUi(String location) throws IOException {
+        Database.log("User Access "+location+" page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
