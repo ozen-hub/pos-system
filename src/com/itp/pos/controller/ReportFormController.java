@@ -1,26 +1,49 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.Database;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ReportFormController {
     public AnchorPane context;
-    public LineChart orderChart;
+    public LineChart<String,Number> orderChart;
     
     public void initialize(){
         loadOrderStatistics();
     }
 
     private void loadOrderStatistics() {
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("yyyy-MM");
+        Map<String, Long> dataMap =
+                Database.orderTable.stream()
+                .collect(Collectors.groupingBy(
+                        order -> sdf.format(
+                                order.getDate()
+                        ), Collectors.counting()
+                ));
+
+        XYChart.Series<String,Number> series =
+                new XYChart.Series<>();
+        series.setName("Order Statistics");
+        dataMap.forEach((date, count) -> {
+            series.getData()
+                    .add(new XYChart.Data<>(date, count));
+        });
+        orderChart.getData().add(series);
     }
 
     public void backToHomeOnAction(ActionEvent actionEvent) {

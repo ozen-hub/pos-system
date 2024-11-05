@@ -19,7 +19,7 @@
          </font>
       </Label>
       <Separator layoutX="14.0" layoutY="43.0" prefHeight="1.0" prefWidth="579.0" />
-      <LineChart fx:id="orderChart" layoutX="14.0" layoutY="84.0" prefHeight="362.0" prefWidth="579.0">
+      <LineChart fx:id="orderChart" layoutX="14.0" layoutY="47.0" prefHeight="399.0" prefWidth="579.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -32,10 +32,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="257.0" layoutY="65.0" text="Order Statistics" textFill="#6417f5">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
