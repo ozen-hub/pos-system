@@ -1,46 +1,31 @@
 package com.itp.pos.controller;
 
-import com.itp.pos.db.Database;
-import com.itp.pos.model.User;
-import com.itp.pos.util.PasswordEncoder;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.chart.LineChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class RegisterFormController {
+public class ReportFormController {
     public AnchorPane context;
-    public TextField txtEmail;
-    public PasswordField txtPassword;
-    public TextField txtFullName;
-
-    public void alreadyHaveAnAccountOnAction(ActionEvent actionEvent) {
-        try{
-            setUi("LoginForm");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public LineChart orderChart;
+    
+    public void initialize(){
+        loadOrderStatistics();
     }
 
-    public void createAccountOnAction(ActionEvent actionEvent) {
-        User user= new User();
-        user.setEmail(txtEmail.getText());
-        user.setPassword(
-                PasswordEncoder.encode(txtPassword.getText())
-        );
-        user.setFullName(txtFullName.getText());
-        Database.userTable.add(user);
+    private void loadOrderStatistics() {
+    }
 
+    public void backToHomeOnAction(ActionEvent actionEvent) {
         try {
-            setUi("LoginForm");
+            setUi("DashboardForm");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,5 +54,4 @@ public class RegisterFormController {
         fadeOut.play();
 
     }
-
 }

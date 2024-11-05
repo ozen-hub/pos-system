@@ -102,7 +102,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="511.0" layoutY="64.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="161.0" text="Reports">
+      <Button layoutX="511.0" layoutY="64.0" mnemonicParsing="false" onAction="#openReportOnAction" prefHeight="48.0" prefWidth="161.0" text="Reports">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

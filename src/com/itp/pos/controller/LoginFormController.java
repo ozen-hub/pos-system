@@ -35,7 +35,7 @@ public class LoginFormController {
     private void setUi(String location) throws IOException {
         Stage stage = (Stage)
                 context.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/" + location + ".fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
         fadeOut.setFromValue(1.0);

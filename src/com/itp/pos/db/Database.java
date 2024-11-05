@@ -6,7 +6,10 @@ import com.itp.pos.model.Product;
 import com.itp.pos.model.User;
 import com.itp.pos.util.PasswordEncoder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 public class Database {
     public static ArrayList<User> userTable
@@ -46,5 +49,150 @@ public class Database {
         productTable.add(new Product("P003","Product 3",555,23));
         productTable.add(new Product("P004","Product 4",342,44));
         productTable.add(new Product("P005","Product 5",545,23));
+        try{
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-01-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-02-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-04-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-05-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-06-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-07-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-08-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-09-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-01-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-10-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-11-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-12-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-01-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-02-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-04-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-05-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-06-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+            orderTable.add(new Order(
+                    UUID.randomUUID().toString(),
+                    new Customer("C001","Saman","Colombo",25000),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("2024-04-10"),
+                    25000,
+                    new ArrayList<>()
+            ));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
