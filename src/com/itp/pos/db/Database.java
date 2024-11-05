@@ -1,9 +1,6 @@
 package com.itp.pos.db;
 
-import com.itp.pos.model.Customer;
-import com.itp.pos.model.Order;
-import com.itp.pos.model.Product;
-import com.itp.pos.model.User;
+import com.itp.pos.model.*;
 import com.itp.pos.util.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +17,8 @@ public class Database {
     public static ArrayList<Product> productTable
             = new ArrayList<>();
     public static ArrayList<Order> orderTable
+            = new ArrayList<>();
+    public static ArrayList<Activity> activityTable
             = new ArrayList<>();
     static {
 
