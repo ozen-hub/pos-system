@@ -30,7 +30,7 @@ public class ActivityLogFormController {
     public void initialize() {
         loadData();
 
-        colUser.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colUser.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("message"));
 

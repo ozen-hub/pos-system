@@ -143,4 +143,14 @@ public class DashboardFormController {
             throw new RuntimeException(e);
         }
     }
+
+    public void logoutOnAction(ActionEvent actionEvent) {
+        Database.log("User Logged out");
+        Database.user=null;
+        try {
+            setUi("LoginForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

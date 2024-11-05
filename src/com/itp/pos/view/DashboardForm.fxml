@@ -33,7 +33,7 @@
                   <Font name="System Italic" size="22.0" />
                </font>
             </Label>
-            <Button layoutX="612.0" layoutY="14.0" mnemonicParsing="false" text="Logout">
+            <Button layoutX="612.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutOnAction" text="Logout">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
