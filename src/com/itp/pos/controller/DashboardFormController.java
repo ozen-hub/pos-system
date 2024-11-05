@@ -135,4 +135,12 @@ public class DashboardFormController {
             throw new RuntimeException(e);
         }
     }
+
+    public void openActivityLogOnActin(ActionEvent actionEvent) {
+        try {
+            setUi("ActivityLogForm");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

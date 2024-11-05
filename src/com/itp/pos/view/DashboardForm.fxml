@@ -94,7 +94,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="447.0" layoutY="122.0" mnemonicParsing="false" text="Activity Log">
+      <Button layoutX="447.0" layoutY="122.0" mnemonicParsing="false" onAction="#openActivityLogOnActin" text="Activity Log">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
