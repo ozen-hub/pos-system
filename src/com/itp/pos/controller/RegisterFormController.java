@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.DBConnection;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.User;
 import com.itp.pos.util.PasswordEncoder;
@@ -8,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -15,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class RegisterFormController {
     public AnchorPane context;
@@ -31,7 +35,7 @@ public class RegisterFormController {
     }
 
     public void createAccountOnAction(ActionEvent actionEvent) {
-        User user= new User();
+        /*User user= new User();
         user.setEmail(txtEmail.getText());
         user.setPassword(
                 PasswordEncoder.encode(txtPassword.getText())
@@ -44,6 +48,28 @@ public class RegisterFormController {
             setUi("LoginForm");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }*/
+        try{
+            PreparedStatement stm=
+            DBConnection
+                    .getInstance()
+                    .getConnection()
+                    .prepareStatement(
+                            "INSERT INTO user VALUES (?,?,?)"
+                    );
+            stm.setString(1, txtEmail.getText());
+            stm.setString(2, txtFullName.getText());
+            stm.setString(3,
+                    PasswordEncoder.encode(txtPassword.getText()));
+            if (stm.executeUpdate()>0){
+                new Alert(Alert.AlertType.INFORMATION,
+                        "Account Created").show();
+            }else{
+                new Alert(Alert.AlertType.WARNING,
+                        "Something went Wrong...").show();
+            }
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
