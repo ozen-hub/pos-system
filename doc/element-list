@@ -1,0 +1,7 @@
+module:pos
+com.itp.pos
+com.itp.pos.controller
+com.itp.pos.db
+com.itp.pos.model
+com.itp.pos.util
+com.itp.pos.view.tm

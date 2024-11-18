@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-
+/** this class will manage all the activities*/
 public class ActivityLogFormController {
 
     public AnchorPane context;

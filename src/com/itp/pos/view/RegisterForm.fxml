@@ -7,11 +7,23 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="context" prefHeight="427.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itp.pos.controller.RegisterFormController">
    <children>
+      <ImageView fitHeight="416.0" fitWidth="551.0" layoutX="-167.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@asserts/iImages.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtFullName" layoutX="11.0" layoutY="157.0" prefHeight="46.0" prefWidth="380.0" promptText="Full Name">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </TextField>
       <Label layoutX="151.0" layoutY="25.0" text="Register">
          <font>
             <Font name="System Bold" size="22.0" />
@@ -38,10 +50,5 @@
       </Button>
       <Hyperlink layoutX="124.0" layoutY="379.0" onAction="#alreadyHaveAnAccountOnAction" text="Already have an Account" underline="true" />
       <Label layoutX="194.0" layoutY="346.0" text="OR" />
-      <TextField fx:id="txtFullName" layoutX="11.0" layoutY="157.0" prefHeight="46.0" prefWidth="380.0" promptText="Full Name">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </TextField>
    </children>
 </AnchorPane>

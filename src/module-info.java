@@ -15,4 +15,5 @@ module pos {
     opens com.itp.pos.model to javafx.fxml;
     opens com.itp.pos to javafx.fxml;
     requires jBCrypt;
+    requires java.sql;
 }
