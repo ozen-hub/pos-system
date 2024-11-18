@@ -35,20 +35,6 @@ public class RegisterFormController {
     }
 
     public void createAccountOnAction(ActionEvent actionEvent) {
-        /*User user= new User();
-        user.setEmail(txtEmail.getText());
-        user.setPassword(
-                PasswordEncoder.encode(txtPassword.getText())
-        );
-        user.setFullName(txtFullName.getText());
-        Database.log("User Registered");
-        Database.userTable.add(user);
-
-        try {
-            setUi("LoginForm");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
         try{
             PreparedStatement stm=
             DBConnection
@@ -64,11 +50,14 @@ public class RegisterFormController {
             if (stm.executeUpdate()>0){
                 new Alert(Alert.AlertType.INFORMATION,
                         "Account Created").show();
+                setUi("LoginForm");
             }else{
                 new Alert(Alert.AlertType.WARNING,
                         "Something went Wrong...").show();
             }
-        }catch (SQLException | ClassNotFoundException e){
+        }catch (SQLException
+                | ClassNotFoundException
+                | IOException e){
             e.printStackTrace();
         }
     }
