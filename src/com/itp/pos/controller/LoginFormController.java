@@ -28,6 +28,10 @@ public class LoginFormController {
     public AnchorPane context;
     public TextField txtEmail;
     public PasswordField txtPassword;
+    public void initialize(){
+        txtEmail.setText("abc@gmail.com");
+        txtPassword.setText("1234");
+    }
 
     public void createAnAccountOnAction(ActionEvent actionEvent) {
        try {

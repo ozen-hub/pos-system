@@ -43,6 +43,8 @@ public class CustomerFormController {
 
     public void initialize() {
 
+        txtId.setEditable(false);
+        generateId();
 
         //===========
         colId.setCellValueFactory(
@@ -146,13 +148,39 @@ public class CustomerFormController {
         );
 
         if (btnSave.getText().equals("Save Customer")){
-            Database.customerTable.add(c1);
-            new Alert(Alert.AlertType.INFORMATION,
-                    "Customer Saved",
-                    ButtonType.OK).show();
-            Database.log("New Customer Created");
-            clear();
-            loadCustomerTable(searchText);
+
+            try{
+
+                boolean isSaved =
+                        CrudUtil.execute(
+                        "INSERT INTO customer VALES(?,?,?,?,?)",
+                        txtId.getText(),
+                        txtName.getText(),
+                        txtAddress.getText(),
+                        Double.parseDouble(txtSalary.getText()),
+                        Database.user.getEmail()
+                );
+
+                if (isSaved){
+                    new Alert(Alert.AlertType.INFORMATION,
+                            "Customer Saved",
+                            ButtonType.OK).show();
+                    clear();
+                    loadCustomerTable(searchText);
+                    generateId();
+                }else {
+                    new Alert(Alert.AlertType.WARNING,
+                            "Something went wrong!",
+                            ButtonType.OK).show();
+                }
+
+            }catch (SQLException | ClassNotFoundException e){
+                new Alert(Alert.AlertType.ERROR,
+                        e.getMessage(),
+                        ButtonType.OK).show();
+            }
+
+
         }else{
             for (Customer c: Database.customerTable){
                 if(c.getId().equals(c1.getId())){
