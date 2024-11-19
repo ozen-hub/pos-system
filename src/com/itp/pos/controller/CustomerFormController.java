@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.CrudUtil;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
 import com.itp.pos.view.tm.CustomerTm;
@@ -18,6 +19,8 @@ import javafx.util.Duration;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class CustomerFormController {
@@ -218,4 +221,35 @@ public class CustomerFormController {
             throw new RuntimeException(e);
         }
     }
+
+
+    private void generateId(){
+        try{
+            ResultSet set =
+                    CrudUtil.execute(
+                    "SELECT id FROM customer ORDER BY id DESC LIMIT 1"
+            );
+            if(set.next()){
+                String selectedCustomerId
+                        = set.getString(1);
+                String arr[]=
+                        selectedCustomerId.split("-");
+                int derivedId=Integer.parseInt(arr[1]);
+                int newId=derivedId+1;
+                String generatedId="";
+                if (newId>100){
+                    generatedId="C-"+newId;
+                }else if (newId>10){
+                    generatedId="C-0"+newId;
+                }
+                txtId.setText(generatedId);
+            }else{
+                txtId.setText("C-001");
+            }
+        }catch (ClassNotFoundException
+        | SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

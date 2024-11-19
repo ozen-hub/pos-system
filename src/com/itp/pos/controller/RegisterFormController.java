@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.CrudUtil;
 import com.itp.pos.db.DBConnection;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.User;
@@ -36,18 +37,13 @@ public class RegisterFormController {
 
     public void createAccountOnAction(ActionEvent actionEvent) {
         try{
-            PreparedStatement stm=
-            DBConnection
-                    .getInstance()
-                    .getConnection()
-                    .prepareStatement(
-                            "INSERT INTO user VALUES (?,?,?)"
-                    );
-            stm.setString(1, txtEmail.getText());
-            stm.setString(2, txtFullName.getText());
-            stm.setString(3,
-                    PasswordEncoder.encode(txtPassword.getText()));
-            if (stm.executeUpdate()>0){
+            boolean isSaved = CrudUtil.execute(
+                 "INSERT INTO user VALUES (?,?,?)",
+                    txtEmail.getText(),
+                    txtFullName.getText(),
+                    PasswordEncoder.encode(txtPassword.getText())
+            );
+            if (isSaved){
                 new Alert(Alert.AlertType.INFORMATION,
                         "Account Created").show();
                 setUi("LoginForm");

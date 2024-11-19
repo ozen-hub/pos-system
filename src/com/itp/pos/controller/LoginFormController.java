@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.CrudUtil;
 import com.itp.pos.db.DBConnection;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.User;
@@ -62,46 +63,12 @@ public class LoginFormController {
     }
 
     public void signInOnAction(ActionEvent actionEvent) {
-        Database.log("User attempt to log in");
         String email = txtEmail.getText();
-        /*User selectedUser = findUser(email);
-        if(selectedUser == null){
-            Database.log("User Logged in attempt failed.");
-            new Alert(Alert.AlertType.WARNING,
-                    "user email not found..",
-                    ButtonType.CLOSE).show();
-            return;
-        }
-        if(PasswordEncoder.check(
-                txtPassword.getText(),
-                selectedUser.getPassword()
-        )){
-
-            // load user interface
-            Database.user=selectedUser;
-            Database.log("User Logged in");
-            try {
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }else{
-            Database.log("User Logged in failed");
-            new Alert(Alert.AlertType.WARNING,
-                    "Wrong password..",
-                    ButtonType.CLOSE).show();
-        }*/
         try{
-            PreparedStatement stm=
-            DBConnection
-                    .getInstance()
-                    .getConnection()
-                    .prepareStatement(
-                            "SELECT * FROM user WHERE email=?"
-                    );
-            stm.setString(1,email);
-            ResultSet resultSet = stm.executeQuery();
+            ResultSet resultSet = CrudUtil.execute(
+                    "SELECT * FROM user WHERE email=?",
+                    email
+            );
             if(resultSet.next()){
                 if(PasswordEncoder.check(
                         txtPassword.getText()
@@ -127,14 +94,5 @@ public class LoginFormController {
         ){
             e.printStackTrace();
         }
-    }
-
-    private User findUser(String email) {
-        for(User u : Database.userTable){
-            if(u.getEmail().equals(email)){
-                return u;
-            }
-        }
-        return null;
     }
 }
