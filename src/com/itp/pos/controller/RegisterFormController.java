@@ -59,6 +59,8 @@ public class RegisterFormController {
                 | ClassNotFoundException
                 | IOException e){
             e.printStackTrace();
+            new Alert(Alert.AlertType.WARNING,
+                    e.getMessage()).show();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.DBConnection;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.User;
 import com.itp.pos.util.PasswordEncoder;
@@ -17,6 +18,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class LoginFormController {
@@ -60,10 +64,7 @@ public class LoginFormController {
     public void signInOnAction(ActionEvent actionEvent) {
         Database.log("User attempt to log in");
         String email = txtEmail.getText();
-        /*Optional<Boolean> first = Database.userTable.stream()
-                .map(e -> e.getEmail()
-                        .equals(email)).findFirst();*/
-        User selectedUser = findUser(email);
+        /*User selectedUser = findUser(email);
         if(selectedUser == null){
             Database.log("User Logged in attempt failed.");
             new Alert(Alert.AlertType.WARNING,
@@ -80,7 +81,7 @@ public class LoginFormController {
             Database.user=selectedUser;
             Database.log("User Logged in");
             try {
-                setUi("DashboardForm");
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -90,6 +91,41 @@ public class LoginFormController {
             new Alert(Alert.AlertType.WARNING,
                     "Wrong password..",
                     ButtonType.CLOSE).show();
+        }*/
+        try{
+            PreparedStatement stm=
+            DBConnection
+                    .getInstance()
+                    .getConnection()
+                    .prepareStatement(
+                            "SELECT * FROM user WHERE email=?"
+                    );
+            stm.setString(1,email);
+            ResultSet resultSet = stm.executeQuery();
+            if(resultSet.next()){
+                if(PasswordEncoder.check(
+                        txtPassword.getText()
+                        ,resultSet.getString("password"))){
+                    Database.user=
+                    new User(resultSet.getString("email"),
+                            null,
+                            resultSet.getString("full_name"));
+                    setUi("DashboardForm");
+                }else{
+                    new Alert(Alert.AlertType.WARNING,"password is wrong!",
+                            ButtonType.OK).show();
+                }
+            }else{
+                new Alert(Alert.AlertType.WARNING,"User email not found!",
+                        ButtonType.OK).show();
+            }
+
+        }catch (
+                SQLException
+                | ClassNotFoundException
+                | IOException e
+        ){
+            e.printStackTrace();
         }
     }
 
