@@ -111,11 +111,21 @@ public class CustomerFormController {
                             alert.showAndWait();
                     if(buttonType.get().equals(ButtonType.YES)){
                         for (Customer cus:Database.customerTable){
-                            if(cus.getId().equals(tm.getId())){
-                                Database.customerTable.remove(cus);
-                                Database.log("Customer was Deleted");
-                                loadCustomerTable("");
-                                return;
+                            try {
+                                boolean isDeleted =
+                                        CrudUtil.execute(
+                                        "DELETE customer WHERE ID=?",
+                                        tm.getId()
+                                );
+                                if(isDeleted){
+                                    new Alert(Alert.AlertType.INFORMATION,"Deleted!").show();
+                                    loadCustomerTable("");
+                                }else{
+                                    new Alert(Alert.AlertType.WARNING,"Try Again!").show();
+                                }
+                            }catch (SQLException |
+                            ClassNotFoundException ex){
+                                ex.printStackTrace();
                             }
                         }
                     }
