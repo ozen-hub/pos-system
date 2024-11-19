@@ -153,7 +153,7 @@ public class CustomerFormController {
 
                 boolean isSaved =
                         CrudUtil.execute(
-                        "INSERT INTO customer VALES(?,?,?,?,?)",
+                        "INSERT INTO customer VALUES(?,?,?,?,?)",
                         txtId.getText(),
                         txtName.getText(),
                         txtAddress.getText(),
@@ -265,10 +265,12 @@ public class CustomerFormController {
                 int derivedId=Integer.parseInt(arr[1]);
                 int newId=derivedId+1;
                 String generatedId="";
-                if (newId>100){
+                if (newId>99){
                     generatedId="C-"+newId;
-                }else if (newId>10){
+                }else if (newId>9){
                     generatedId="C-0"+newId;
+                }else{
+                    generatedId="C-00"+newId;
                 }
                 txtId.setText(generatedId);
             }else{
