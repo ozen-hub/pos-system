@@ -198,21 +198,26 @@ public class CustomerFormController {
 
 
         }else{
-            for (Customer c: Database.customerTable){
-                if(c.getId().equals(c1.getId())){
-                    c.setAddress(c1.getAddress());
-                    c.setName(c1.getName());
-                    c.setSalary(c1.getSalary());
+            try{
+                boolean isUpdated= CrudUtil.execute(
+                        "UPDATE customer SET name=?, address=?, salary=? WHERE id=?",
+                        txtName.getText(),
+                        txtAddress.getText(),
+                        Double.parseDouble(txtSalary.getText()),
+                        txtId.getText()
+                );
+                if(isUpdated){
                     loadCustomerTable(searchText);
                     new Alert(Alert.AlertType.INFORMATION,
                             "Success").show();
-                    Database.log("Customer Updated");
                     btnSave.setText("Save Customer");
                     clear();
-                    txtId.setEditable(true);
-                    return;
+                }else{
+                    new Alert(Alert.AlertType.WARNING,
+                            "Try Again").show();
                 }
-
+            }catch (SQLException | ClassNotFoundException e){
+                e.printStackTrace();
             }
         }
 
@@ -229,7 +234,8 @@ public class CustomerFormController {
 
     public void newCustomerOnAction(ActionEvent actionEvent) {
         btnSave.setText("Save Customer");
-        txtId.setEditable(true);
+        txtId.setEditable(false);
+        generateId();
         clear();
     }
 
