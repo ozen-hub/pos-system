@@ -77,28 +77,27 @@ public class CustomerFormController {
     }
 
     private ObservableList<CustomerTm> obList = FXCollections.observableArrayList();
-    private void loadCustomerTable(String SearchText) {
-        Database.log("all customer loaded");
+    private void loadCustomerTable(String searchText) {
+
         obList.clear();
-        SearchText=SearchText.toLowerCase();
-
-        for (Customer c : Database.customerTable) {
-
-            if (
-                    c.getName().toLowerCase().contains(SearchText) ||
-                            c.getAddress().toLowerCase().contains(SearchText)
-            ){
+        searchText="%"+searchText.toLowerCase()+"%";
+        try{
+            ResultSet set = CrudUtil.execute(
+                    "SELECT * FROM customer WHERE name LIKE ? OR address LIKE ?",
+                    searchText,
+                    searchText
+            );
+            while (set.next()){
                 ButtonBar toolBar = new ButtonBar();
                 Button delete = new Button("Delete");
-
                 Button update = new Button("Update");
                 toolBar.getButtons().addAll(delete, update);
                 CustomerTm
                         tm = new CustomerTm(
-                        c.getId(),
-                        c.getName(),
-                        c.getAddress(),
-                        c.getSalary(),
+                        set.getString(1),
+                        set.getString(2),
+                        set.getString(3),
+                        set.getDouble(4),
                         toolBar
                 );
 
@@ -115,7 +114,7 @@ public class CustomerFormController {
                             if(cus.getId().equals(tm.getId())){
                                 Database.customerTable.remove(cus);
                                 Database.log("Customer was Deleted");
-                                loadCustomerTable(searchText);
+                                loadCustomerTable("");
                                 return;
                             }
                         }
@@ -136,7 +135,24 @@ public class CustomerFormController {
                 tblCustomers.setItems(obList);
             }
 
+        }catch (
+                SQLException
+                | ClassNotFoundException e
+        ){
+            e.printStackTrace();
         }
+
+
+        /*for (Customer c : Database.customerTable) {
+
+            if (
+                    c.getName().toLowerCase().contains(SearchText) ||
+                            c.getAddress().toLowerCase().contains(SearchText)
+            ){
+
+
+
+        }*/
     }
 
     public void saveOnAction(ActionEvent actionEvent) {
