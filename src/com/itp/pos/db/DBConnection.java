@@ -11,7 +11,8 @@ public class DBConnection {
             SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn= DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pos_v1?","root",
+                "jdbc:mysql://localhost:3306/pos_v1",
+                "root",
                 "1234"
         );
     }
