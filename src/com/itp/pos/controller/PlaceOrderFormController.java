@@ -84,18 +84,26 @@ public class PlaceOrderFormController {
                     }
 
                 });
+
         cmbProductId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                    if(newValue!=null){
-                       for (Product p : Database.productTable) {
-                           Database.log("Load Product data");
-                           if (p.getProductId().equals(newValue)) {
-                               txtDescription.setText(p.getDescription());
-                               txtUnitPrice.setText(String.valueOf(p.getUitPrice()));
-                               txtQtyOnHand.setText(String.valueOf(p.getQtyOnHand()));
+
+                       try{
+                           ResultSet set =
+                           CrudUtil.execute(
+                                   "SELECT * FROM product WHERE code=?",
+                                   newValue
+                           );
+                           if(set.next()){
+                               txtDescription.setText(set.getString(2));
+                               txtUnitPrice.setText(String.valueOf(set.getDouble(3)));
+                               txtQtyOnHand.setText(String.valueOf(set.getInt(4)));
                                txtQty.requestFocus();
                            }
+                       }catch (ClassNotFoundException | SQLException e){
+                           e.printStackTrace();
                        }
                    }
                 });
@@ -106,9 +114,20 @@ public class PlaceOrderFormController {
     private void loadAllProductIds() {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        for (Product p : Database.productTable) {
-            Database.log("Load Product Ids");
-            obList.add(p.getProductId());
+        try{
+            ResultSet set =
+            CrudUtil.execute(
+                    "SELECT code FROM product"
+            );
+            while (set.next()){
+                obList.add(
+                        set.getString(1)
+                );
+            }
+        }catch (
+                SQLException | ClassNotFoundException e
+        ){
+            e.printStackTrace();
         }
         cmbProductId.setItems(obList);
     }
