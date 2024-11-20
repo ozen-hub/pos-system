@@ -67,14 +67,19 @@ public class PlaceOrderFormController {
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if(newValue!=null){
-                        for (Customer c : Database.customerTable) {
-                            Database.log("load customer data");
-                            if (newValue.equals(c.getId())) {
-                                txtName.setText(c.getName());
-                                txtAddress.setText(c.getAddress());
-                                txtSalary.setText(String.valueOf(c.getSalary()));
-                                return;
+                        try{
+                            ResultSet set =
+                            CrudUtil.execute(
+                                    "SELECT * FROM customer WHERE id=?",
+                                    newValue
+                            );
+                            if(set.next()){
+                                txtName.setText(set.getString(2));
+                                txtAddress.setText(set.getString(3));
+                                txtSalary.setText(String.valueOf(set.getString(4)));
                             }
+                        }catch (SQLException | ClassNotFoundException e){
+                            e.printStackTrace();
                         }
                     }
 
