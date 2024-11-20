@@ -346,7 +346,7 @@ public class PlaceOrderFormController {
         lblNett.setText(String.valueOf(nett));
     }
 
-    public void placeOrderOnAction(ActionEvent actionEvent) {
+    public void placeOrderOnAction(ActionEvent actionEvent) throws SQLException {
 
         if (cmbCustomerId.getValue() == null) {
             new Alert(Alert.AlertType.WARNING, "Please Select your Customer").show();
@@ -377,45 +377,76 @@ public class PlaceOrderFormController {
             for (CartTm tm : tmObList) {
                 nettAmount += tm.getTotal();
             }
-
+            String orderId =
+                    UUID.randomUUID().toString();
             boolean isSaved =
-                    placeNewOrder(nettAmount,selectedCustomer.getId());
+                    placeNewOrder(orderId, nettAmount,selectedCustomer.getId());
 
             if (isSaved){
-                // add order items
+                for (CartTm tm : tmObList) {
+                    boolean isCompleted
+                    = saveOrderProduct(
+                            orderId,
+                            tm.getProductId(),
+                            tm.getUnitPrice(),
+                            tm.getQty()
+                    );
+                    if(!isCompleted){
+                        con.rollback();
+                    }
+                }
+            }else{
+                con.rollback();
             }
+
+            con.commit();
+            new Alert(Alert.AlertType.INFORMATION, "Order Saved").show();
+            clearAll();
 
         } catch (SQLException
                  | ClassNotFoundException e) {
             e.printStackTrace();
+            con.rollback();
+        }finally {
+            con.setAutoCommit(true);
         }
+    }
 
-
-       // tmObList.stream().forEach(e->nettAmount+=e.getTotal());
-        Order order = new Order(
-                UUID.randomUUID().toString(),
-                selectedCustomer,
-                new Date(),
-                nettAmount,
-                items
+    private boolean saveOrderProduct(
+            String orderId, String productId,
+            double unitPrice, int qty) throws SQLException, ClassNotFoundException {
+        boolean isSaved = CrudUtil.execute(
+                "INSERT INTO customer_order_has_product Values(?,?,?,?)",
+                orderId,
+                productId,
+                unitPrice,
+                qty
         );
-
-        Database.orderTable.add(order);
-        Database.log("Order Placed");
-        for (CartTm tm : tmObList) {
-            updateQty(tm, tm.getQty());
+        if(isSaved){
+           if (updateQtyOnTable(productId, qty)){
+               return true;
+           }else{
+               return false;
+           }
+        }else{
+            return false;
         }
-
-        new Alert(Alert.AlertType.INFORMATION, "Order Saved").show();
-        clearAll();
 
     }
 
-    private boolean placeNewOrder(double total,
+    private boolean updateQtyOnTable(String productId,
+                                  int qty) throws SQLException, ClassNotFoundException {
+        return CrudUtil.execute(
+                "UPDATE product SET qty_on_hand=qty_on_hand-? WHERE code=?",
+                qty, productId
+        );
+    }
+
+    private boolean placeNewOrder(String orderId,double total,
                                   String customerId) throws SQLException, ClassNotFoundException {
         return CrudUtil.execute(
                 "INSERT INTO customer_order VALUES(?,?,?,?)",
-                UUID.randomUUID().toString(),
+                orderId,
                 LocalDate.now(),
                 total,
                 customerId
@@ -450,19 +481,6 @@ public class PlaceOrderFormController {
         tmObList.clear();
         tblCart.refresh();
         setNettAmount();
-    }
-
-    private boolean updateQty(CartTm tm, int qty) {
-        for (Product pr : Database.productTable) {
-            if (tm.getProductId().equals(pr.getProductId())) {
-                Database.log("Quantity Updated");
-                pr.setQtyOnHand(
-                        pr.getQtyOnHand() - qty
-                );
-                return true;
-            }
-        }
-        return false;
     }
 
 }
