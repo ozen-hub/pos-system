@@ -23,6 +23,14 @@ public class Example {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
 
+        }finally {
+            try{
+                DBConnection.getInstance()
+                        .getConnection()
+                        .setAutoCommit(true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -35,9 +43,9 @@ public class Example {
                         .prepareStatement(
                                 "INSERT INTO student VALUES(?,?,?)"
                         );
-        stm.setString(1, "1001");
-        stm.setString(2, "Saman Pradeep");
-        stm.setInt(3, 23);
+        stm.setString(1, "1002");
+        stm.setString(2, "Kumara Pradeep");
+        stm.setInt(3, 18);
         return stm.executeUpdate() > 0;
     }
 
@@ -47,7 +55,7 @@ public class Example {
                         .getInstance()
                         .getConnection()
                         .prepareStatement(
-                                "INSERT INTO registration VALUES(?,?,?,?)"
+                                "INSERT INTOO registration VALUES(?,?,?,?)"
                         );
         stm.setString(1, "001");
         stm.setObject(2, LocalDate.now());
