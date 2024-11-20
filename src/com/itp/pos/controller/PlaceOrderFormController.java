@@ -1,6 +1,7 @@
 package com.itp.pos.controller;
 
 import com.itp.pos.db.CrudUtil;
+import com.itp.pos.db.DBConnection;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
 import com.itp.pos.model.Item;
@@ -21,12 +22,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 public class PlaceOrderFormController {
     public ComboBox<String> cmbCustomerId;
@@ -357,43 +357,41 @@ public class PlaceOrderFormController {
             return;
         }
 
-        try{
+        Connection con = null;
+        try {
+            con = DBConnection
+                    .getInstance()
+                    .getConnection();
+
             Customer selectedCustomer =
                     findCustomerById(cmbCustomerId.getValue());
-            if (selectedCustomer==null){
-                new Alert(Alert.AlertType.WARNING, "Customer Not Found").show();
+            if (selectedCustomer == null) {
+                new Alert(Alert.AlertType.WARNING,
+                        "Customer Not Found").show();
                 return;
             }
-        }catch (SQLException
-        | ClassNotFoundException e){
+
+            con.setAutoCommit(false);
+
+            double nettAmount = 0;
+            for (CartTm tm : tmObList) {
+                nettAmount += tm.getTotal();
+            }
+
+            boolean isSaved =
+                    placeNewOrder(nettAmount,selectedCustomer.getId());
+
+            if (isSaved){
+                // add order items
+            }
+
+        } catch (SQLException
+                 | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        Customer selectedCustomer = null;
-        label:
-        for (Customer customer : Database.customerTable) {
-            if (cmbCustomerId.getValue().equals(customer.getId())) {
-                selectedCustomer = customer;
-                break label;
-            }
-        }
 
-        if (selectedCustomer == null) {
-            new Alert(Alert.AlertType.WARNING, "Customer Not Found").show();
-            return;
-        }
-
-
-        ArrayList<Item> items = new ArrayList<>();
-        double nettAmount = 0;
-        for (CartTm tm : tmObList) {
-            nettAmount += tm.getTotal();
-            items.add(
-                    new Item(tm.getProductId(),
-                            tm.getQty(),
-                            tm.getUnitPrice())
-            );
-        }
+       // tmObList.stream().forEach(e->nettAmount+=e.getTotal());
         Order order = new Order(
                 UUID.randomUUID().toString(),
                 selectedCustomer,
@@ -411,6 +409,17 @@ public class PlaceOrderFormController {
         new Alert(Alert.AlertType.INFORMATION, "Order Saved").show();
         clearAll();
 
+    }
+
+    private boolean placeNewOrder(double total,
+                                  String customerId) throws SQLException, ClassNotFoundException {
+        return CrudUtil.execute(
+                "INSERT INTO customer_order VALUES(?,?,?,?)",
+                UUID.randomUUID().toString(),
+                LocalDate.now(),
+                total,
+                customerId
+        );
     }
 
     private Customer findCustomerById(String id) throws SQLException, ClassNotFoundException {
