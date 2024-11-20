@@ -334,9 +334,10 @@ public class ProductFormController {
 
         new Alert(Alert.AlertType.INFORMATION,"All Saved")
                 .show();
+        clear();
         generateId();
         loadTableData(searchText);
-        clear();
+
 
     }
 }
