@@ -66,19 +66,19 @@ public class PlaceOrderFormController {
         cmbCustomerId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    if(newValue!=null){
-                        try{
+                    if (newValue != null) {
+                        try {
                             ResultSet set =
-                            CrudUtil.execute(
-                                    "SELECT * FROM customer WHERE id=?",
-                                    newValue
-                            );
-                            if(set.next()){
+                                    CrudUtil.execute(
+                                            "SELECT * FROM customer WHERE id=?",
+                                            newValue
+                                    );
+                            if (set.next()) {
                                 txtName.setText(set.getString(2));
                                 txtAddress.setText(set.getString(3));
                                 txtSalary.setText(String.valueOf(set.getString(4)));
                             }
-                        }catch (SQLException | ClassNotFoundException e){
+                        } catch (SQLException | ClassNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -88,24 +88,24 @@ public class PlaceOrderFormController {
         cmbProductId.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                   if(newValue!=null){
+                    if (newValue != null) {
 
-                       try{
-                           ResultSet set =
-                           CrudUtil.execute(
-                                   "SELECT * FROM product WHERE code=?",
-                                   newValue
-                           );
-                           if(set.next()){
-                               txtDescription.setText(set.getString(2));
-                               txtUnitPrice.setText(String.valueOf(set.getDouble(3)));
-                               txtQtyOnHand.setText(String.valueOf(set.getInt(4)));
-                               txtQty.requestFocus();
-                           }
-                       }catch (ClassNotFoundException | SQLException e){
-                           e.printStackTrace();
-                       }
-                   }
+                        try {
+                            ResultSet set =
+                                    CrudUtil.execute(
+                                            "SELECT * FROM product WHERE code=?",
+                                            newValue
+                                    );
+                            if (set.next()) {
+                                txtDescription.setText(set.getString(2));
+                                txtUnitPrice.setText(String.valueOf(set.getDouble(3)));
+                                txtQtyOnHand.setText(String.valueOf(set.getInt(4)));
+                                txtQty.requestFocus();
+                            }
+                        } catch (ClassNotFoundException | SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
 
 
@@ -114,19 +114,19 @@ public class PlaceOrderFormController {
     private void loadAllProductIds() {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        try{
+        try {
             ResultSet set =
-            CrudUtil.execute(
-                    "SELECT code FROM product"
-            );
-            while (set.next()){
+                    CrudUtil.execute(
+                            "SELECT code FROM product"
+                    );
+            while (set.next()) {
                 obList.add(
                         set.getString(1)
                 );
             }
-        }catch (
+        } catch (
                 SQLException | ClassNotFoundException e
-        ){
+        ) {
             e.printStackTrace();
         }
         cmbProductId.setItems(obList);
@@ -135,16 +135,16 @@ public class PlaceOrderFormController {
     private void loadCustomerIds() {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        try{
+        try {
             ResultSet set =
                     CrudUtil.execute("SELECT id FROM customer");
-            while (set.next()){
+            while (set.next()) {
                 obList.add(
                         set.getString(1)
                 );
             }
-        }catch (SQLException |
-        ClassNotFoundException e){
+        } catch (SQLException |
+                 ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -180,10 +180,10 @@ public class PlaceOrderFormController {
     }
 
     private void setUi(String location) throws IOException {
-        Database.log("User Access "+location+" Page");
+        Database.log("User Access " + location + " Page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/" + location + ".fxml"));
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
         fadeOut.setFromValue(1.0);
@@ -348,32 +348,46 @@ public class PlaceOrderFormController {
 
     public void placeOrderOnAction(ActionEvent actionEvent) {
 
-        if(cmbCustomerId.getValue()==null){
-            new Alert(Alert.AlertType.WARNING,"Please Select your Customer").show();
+        if (cmbCustomerId.getValue() == null) {
+            new Alert(Alert.AlertType.WARNING, "Please Select your Customer").show();
             return;
         }
-        if (tmObList.isEmpty()){
-            new Alert(Alert.AlertType.WARNING,"At least one product is required!..").show();
+        if (tmObList.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "At least one product is required!..").show();
             return;
         }
-        Customer selectedCustomer=null;
-        label:for (Customer customer:Database.customerTable){
-            if(cmbCustomerId.getValue().equals(customer.getId())){
-                selectedCustomer=customer;
+
+        try{
+            Customer selectedCustomer =
+                    findCustomerById(cmbCustomerId.getValue());
+            if (selectedCustomer==null){
+                new Alert(Alert.AlertType.WARNING, "Customer Not Found").show();
+                return;
+            }
+        }catch (SQLException
+        | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        Customer selectedCustomer = null;
+        label:
+        for (Customer customer : Database.customerTable) {
+            if (cmbCustomerId.getValue().equals(customer.getId())) {
+                selectedCustomer = customer;
                 break label;
             }
         }
 
-        if(selectedCustomer==null){
-            new Alert(Alert.AlertType.WARNING,"Customer Not Found").show();
+        if (selectedCustomer == null) {
+            new Alert(Alert.AlertType.WARNING, "Customer Not Found").show();
             return;
         }
 
 
         ArrayList<Item> items = new ArrayList<>();
-        double nettAmount=0;
-        for(CartTm tm:tmObList){
-            nettAmount+=tm.getTotal();
+        double nettAmount = 0;
+        for (CartTm tm : tmObList) {
+            nettAmount += tm.getTotal();
             items.add(
                     new Item(tm.getProductId(),
                             tm.getQty(),
@@ -390,15 +404,30 @@ public class PlaceOrderFormController {
 
         Database.orderTable.add(order);
         Database.log("Order Placed");
-        for(CartTm tm:tmObList){
-           updateQty(tm,tm.getQty());
+        for (CartTm tm : tmObList) {
+            updateQty(tm, tm.getQty());
         }
 
-        new Alert(Alert.AlertType.INFORMATION,"Order Saved").show();
+        new Alert(Alert.AlertType.INFORMATION, "Order Saved").show();
         clearAll();
 
     }
-    private void clearAll(){
+
+    private Customer findCustomerById(String id) throws SQLException, ClassNotFoundException {
+        ResultSet set = CrudUtil.execute(
+                "SELECT * FROM customer WHERE id=?",
+                id
+        );
+        return set.next() ?
+                new Customer(
+                        set.getString(1),
+                        set.getString(2),
+                        set.getString(3),
+                        set.getDouble(4)
+                ) : null;
+    }
+
+    private void clearAll() {
         txtQty.clear();
         txtName.clear();
         txtSalary.clear();
@@ -414,12 +443,12 @@ public class PlaceOrderFormController {
         setNettAmount();
     }
 
-    private boolean updateQty(CartTm tm, int qty){
-        for(Product pr: Database.productTable){
-            if(tm.getProductId().equals(pr.getProductId())){
+    private boolean updateQty(CartTm tm, int qty) {
+        for (Product pr : Database.productTable) {
+            if (tm.getProductId().equals(pr.getProductId())) {
                 Database.log("Quantity Updated");
                 pr.setQtyOnHand(
-                        pr.getQtyOnHand()-qty
+                        pr.getQtyOnHand() - qty
                 );
                 return true;
             }
