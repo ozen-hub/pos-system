@@ -1,0 +1,51 @@
+id,description,unit_price,qty_on_hand
+P-001,Laptop,50.0,10
+P-002,Smartphone,53.5,11
+P-003,Tablet,57.0,12
+P-004,Headphones,60.5,13
+P-005,Smartwatch,64.0,14
+P-006,Keyboard,67.5,15
+P-007,Mouse,71.0,16
+P-008,Monitor,74.5,17
+P-009,Printer,78.0,18
+P-010,Router,81.5,19
+P-011,Camera,85.0,20
+P-012,Speaker,88.5,21
+P-013,External Hard Drive,92.0,22
+P-014,USB Flash Drive,95.5,23
+P-015,Memory Card,99.0,24
+P-016,Gaming Console,102.5,25
+P-017,VR Headset,106.0,26
+P-018,Drone,109.5,27
+P-019,Projector,113.0,28
+P-020,Portable Charger,116.5,29
+P-021,Electric Toothbrush,120.0,30
+P-022,Hair Dryer,123.5,31
+P-023,Blender,127.0,32
+P-024,Microwave,130.5,33
+P-025,Refrigerator,134.0,34
+P-026,Washing Machine,137.5,35
+P-027,Air Conditioner,141.0,36
+P-028,Vacuum Cleaner,144.5,37
+P-029,Oven,148.0,38
+P-030,Dishwasher,151.5,39
+P-031,Water Heater,155.0,40
+P-032,Fan,158.5,41
+P-033,Heater,162.0,42
+P-034,Coffee Maker,165.5,43
+P-035,Toaster,169.0,44
+P-036,Electric Kettle,172.5,45
+P-037,Mixer Grinder,176.0,46
+P-038,Iron,179.5,47
+P-039,Sewing Machine,183.0,48
+P-040,Pressure Cooker,186.5,49
+P-041,Electric Scooter,190.0,50
+P-042,Bicycle,193.5,51
+P-043,Helmet,197.0,52
+P-044,Treadmill,200.5,53
+P-045,Dumbbells,204.0,54
+P-046,Yoga Mat,207.5,55
+P-047,Fitness Tracker,211.0,56
+P-048,Camping Tent,214.5,57
+P-049,Sleeping Bag,218.0,58
+P-050,Hiking Backpack,221.5,59

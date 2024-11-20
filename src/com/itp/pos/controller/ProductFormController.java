@@ -13,9 +13,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -116,6 +120,7 @@ public class ProductFormController {
                             if (isDeleted) {
                                 loadTableData(finalSearchText);
                                 new Alert(Alert.AlertType.INFORMATION, "Deleted..").show();
+                                generateId();
                             }
                         } catch (SQLException |
                                  ClassNotFoundException ex) {
@@ -189,7 +194,7 @@ public class ProductFormController {
                         );
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION, "Saved..").show();
-
+                    generateId();
                     loadTableData(searchText);
                     clear();
                 } else {
@@ -214,6 +219,7 @@ public class ProductFormController {
                     new Alert(Alert.AlertType.INFORMATION, "Updated..").show();
                     loadTableData(searchText);
                     btnSave.setText("Save Product");
+                    generateId();
                     clear();
                 } else {
                     new Alert(Alert.AlertType.WARNING, "Try Again..").show();
@@ -262,6 +268,33 @@ public class ProductFormController {
         } catch (ClassNotFoundException
                  | SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void bulkUploadOnAction(ActionEvent actionEvent) {
+        FileChooser fileChooser
+                = new FileChooser();
+        fileChooser.setTitle("choose the csv file.");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "CSV Files","*.csv"
+                )
+        );
+        File file = fileChooser.showOpenDialog(
+                context.getScene().getWindow()
+        );
+        if (null!=file){
+            try{
+                BufferedReader br =
+                        new BufferedReader(
+                                new FileReader(file)
+                        );
+                String line;
+                boolean headSkipped=false;
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 }
