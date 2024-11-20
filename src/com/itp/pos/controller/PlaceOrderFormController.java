@@ -1,5 +1,6 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.CrudUtil;
 import com.itp.pos.db.Database;
 import com.itp.pos.model.Customer;
 import com.itp.pos.model.Item;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -108,10 +111,19 @@ public class PlaceOrderFormController {
     private void loadCustomerIds() {
         ObservableList<String> obList =
                 FXCollections.observableArrayList();
-        for (Customer c : Database.customerTable) {
-            Database.log("Load Customer Ids");
-            obList.add(c.getId());
+        try{
+            ResultSet set =
+                    CrudUtil.execute("SELECT id FROM customer");
+            while (set.next()){
+                obList.add(
+                        set.getString(1)
+                );
+            }
+        }catch (SQLException |
+        ClassNotFoundException e){
+            e.printStackTrace();
         }
+
         cmbCustomerId.setItems(obList);
     }
 
