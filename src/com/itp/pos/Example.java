@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Example {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         try {
             Connection c = DBConnection.getInstance()
                     .getConnection();
@@ -17,12 +17,18 @@ public class Example {
             if (saveStudent()) {
                 if (saveRegistration()) {
                     c.commit();
-                } else {c.rollback();}
-            }else{c.rollback();}
+                } else {
+                    c.rollback();
+                }
+            }else{
+                c.rollback();
+            }
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-
+            DBConnection.getInstance()
+                    .getConnection()
+                    .rollback();
         }finally {
             try{
                 DBConnection.getInstance()
@@ -43,7 +49,7 @@ public class Example {
                         .prepareStatement(
                                 "INSERT INTO student VALUES(?,?,?)"
                         );
-        stm.setString(1, "1002");
+        stm.setString(1, "1005");
         stm.setString(2, "Kumara Pradeep");
         stm.setInt(3, 18);
         return stm.executeUpdate() > 0;
@@ -55,7 +61,7 @@ public class Example {
                         .getInstance()
                         .getConnection()
                         .prepareStatement(
-                                "INSERT INTOO registration VALUES(?,?,?,?)"
+                                "INSERT INTO registration VALUES(?,?,?,?)"
                         );
         stm.setString(1, "001");
         stm.setObject(2, LocalDate.now());

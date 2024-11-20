@@ -21,6 +21,7 @@ public class DBConnection {
                 dbConnection=new DBConnection():dbConnection;
     }
     public Connection getConnection() {
+        System.out.println(conn);
         return conn;
     }
 }
