@@ -292,9 +292,51 @@ public class ProductFormController {
                 String line;
                 boolean headSkipped=false;
 
+                while ((line=br.readLine())!=null){
+                    if(!headSkipped){
+                        headSkipped=true;
+                        continue;
+                    }
+
+                    String [] arr = line.split(",");
+                    String code=arr[0];
+                    String description=arr[1].trim();
+                    double unitPrice=Double.parseDouble(arr[2]);
+                    int qtyOnHand=Integer.parseInt(arr[3]);
+
+                    try {
+                        boolean isSaved =
+                        CrudUtil.execute(
+                                "INSERT INTO product VALUES(?,?,?,?)",
+                                code,description,unitPrice,qtyOnHand
+                        );
+                        if(!isSaved){
+                            new Alert(Alert.AlertType.WARNING,"Failed to Upload")
+                                    .show();
+                            return;
+                        }
+
+                    }catch (SQLException
+                            | ClassNotFoundException e){
+                        new Alert(Alert.AlertType.ERROR,
+                                e.getMessage()).show();
+                        return;
+                    }
+                }
+
             }catch (IOException e){
                 e.printStackTrace();
             }
+        }else{
+            new Alert(Alert.AlertType.ERROR,
+                    "Please select a valid file").show();
         }
+
+        new Alert(Alert.AlertType.INFORMATION,"All Saved")
+                .show();
+        generateId();
+        loadTableData(searchText);
+        clear();
+
     }
 }
