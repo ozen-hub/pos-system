@@ -1,7 +1,7 @@
 package com.itp.pos.controller;
 
+import com.itp.pos.db.CrudUtil;
 import com.itp.pos.db.Database;
-import com.itp.pos.model.Product;
 import com.itp.pos.view.tm.ProductTm;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class ProductFormController {
@@ -38,6 +40,8 @@ public class ProductFormController {
 
     public void initialize() {
         loadTableData(searchText);
+        txtId.setEditable(false);
+        generateId();
 
         colId.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("id"));
         colDescription.setCellValueFactory(new PropertyValueFactory<ProductTm, String>("description"));
@@ -56,7 +60,7 @@ public class ProductFormController {
         tblProducts.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    if(newValue != null) {
+                    if (newValue != null) {
                         Database.log("Load Product Data");
                         setData(newValue);
                     }
@@ -79,17 +83,20 @@ public class ProductFormController {
             FXCollections.observableArrayList();
 
     private void loadTableData(String searchText) {
-        Database.log("Load All Products");
         obList.clear();
-        searchText = searchText.toLowerCase();
-        for (Product p : Database.productTable) {
-            if (p.getDescription().toLowerCase().contains(searchText)) {
+        searchText = "%" + searchText.toLowerCase() + "%";
+        try {
+            ResultSet set = CrudUtil.execute(
+                    "SELECT * FROM product WHERE description LIKE ?",
+                    searchText
+            );
+            while (set.next()) {
                 Button btn = new Button("Delete");
                 ProductTm tm = new ProductTm(
-                        p.getProductId(),
-                        p.getDescription(),
-                        p.getUitPrice(),
-                        p.getQtyOnHand(),
+                        set.getString(1),
+                        set.getString(2),
+                        set.getDouble(3),
+                        set.getInt(4),
                         btn
                 );
 
@@ -103,14 +110,18 @@ public class ProductFormController {
                     Optional<ButtonType> buttonType =
                             alert.showAndWait();
                     if (buttonType.get().equals(ButtonType.YES)) {
-                        for (Product pro : Database.productTable) {
-                            if (pro.getProductId().equals(tm.getId())) {
-                                Database.productTable.remove(pro);
-                                Database.log("Product Deleted");
+
+                        try {
+                            boolean isDeleted = CrudUtil.execute("DELETE FROM product WHERE code=?", tm.getId());
+                            if (isDeleted) {
                                 loadTableData(finalSearchText);
-                                return;
+                                new Alert(Alert.AlertType.INFORMATION, "Deleted..").show();
                             }
+                        } catch (SQLException |
+                                 ClassNotFoundException ex) {
+                            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
                         }
+
                     }
 
                 });
@@ -118,15 +129,18 @@ public class ProductFormController {
                 obList.add(tm);
                 tblProducts.setItems(obList);
             }
+        } catch (SQLException |
+                 ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
         }
     }
 
 
     private void setUi(String location) throws IOException {
-        Database.log("User Access "+location+" page");
+        Database.log("User Access " + location + " page");
         Stage stage = (Stage)
                 context.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/"+location+".fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/itp/pos/view/" + location + ".fxml"));
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(300), stage.getScene().getRoot());
         fadeOut.setFromValue(1.0);
@@ -163,37 +177,51 @@ public class ProductFormController {
     }
 
     public void saveOnAction(ActionEvent actionEvent) {
-        Product product = new Product(
-                txtId.getText(),
-                txtDescription.getText(),
-                Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtQty.getText())
-        );
-
         if (btnSave.getText().equals("Save Product")) {
-            Database.productTable.add(product);
-            new Alert(Alert.AlertType.INFORMATION, "Saved..").show();
-            loadTableData(searchText);
-            Database.log("Created new Product");
-            clear();
-        } else {
-            for (Product p : Database.productTable) {
-                if (p.getProductId().equals(product.getProductId())) {
-                    p.setDescription(product.getDescription());
-                    p.setQtyOnHand(product.getQtyOnHand());
-                    p.setUitPrice(product.getUitPrice());
-                    loadTableData(searchText);
-                    new Alert(Alert.AlertType.INFORMATION,
-                            "Success").show();
-                    Database.log("Product Updated");
-                    btnSave.setText("Save Product");
-                    clear();
-                    txtId.setEditable(true);
-                    return;
-                }
 
+            try {
+                boolean isSaved =
+                        CrudUtil.execute("INSERT INTO product VALUES(?,?,?,?)",
+                                txtId.getText(),
+                                txtDescription.getText(),
+                                Double.parseDouble(txtUnitPrice.getText()),
+                                Integer.parseInt(txtQty.getText())
+                        );
+                if (isSaved) {
+                    new Alert(Alert.AlertType.INFORMATION, "Saved..").show();
+
+                    loadTableData(searchText);
+                    clear();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again..").show();
+                }
+            } catch (SQLException |
+                     ClassNotFoundException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
             }
 
+        } else {
+
+            try {
+                boolean isUpdated =
+                        CrudUtil.execute("UPDATE product SET description=?, qty_on_hand=?, unit_price=? WHERE code=?",
+                                txtDescription.getText(),
+                                Integer.parseInt(txtQty.getText()),
+                                Double.parseDouble(txtUnitPrice.getText()),
+                                txtId.getText()
+                        );
+                if (isUpdated) {
+                    new Alert(Alert.AlertType.INFORMATION, "Updated..").show();
+                    loadTableData(searchText);
+                    btnSave.setText("Save Product");
+                    clear();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again..").show();
+                }
+            } catch (SQLException |
+                     ClassNotFoundException e) {
+                new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+            }
         }
 
     }
@@ -204,5 +232,36 @@ public class ProductFormController {
         txtUnitPrice.clear();
         txtQty.clear();
         txtId.requestFocus();
+    }
+
+    private void generateId() {
+        try {
+            ResultSet set =
+                    CrudUtil.execute(
+                            "SELECT code FROM product ORDER BY code DESC LIMIT 1"
+                    );
+            if (set.next()) {
+                String selectedCustomerId
+                        = set.getString(1);
+                String arr[] =
+                        selectedCustomerId.split("-");
+                int derivedId = Integer.parseInt(arr[1]);
+                int newId = derivedId + 1;
+                String generatedId = "";
+                if (newId > 99) {
+                    generatedId = "P-" + newId;
+                } else if (newId > 9) {
+                    generatedId = "P-0" + newId;
+                } else {
+                    generatedId = "P-00" + newId;
+                }
+                txtId.setText(generatedId);
+            } else {
+                txtId.setText("P-001");
+            }
+        } catch (ClassNotFoundException
+                 | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
